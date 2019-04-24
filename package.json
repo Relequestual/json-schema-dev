@@ -16,8 +16,10 @@
     "ajv-async": "^1.0.1",
     "bootstrap-vue": "^2.0.0-rc.12",
     "browserify": "^16.2.3",
-    "jsonlint-mod": "^1.7.4",
+    "file": "^0.2.2",
+    "jsonlint": "^1.6.3",
     "lodash": "^4.17.11",
+    "system": "^2.0.1",
     "vue": "^2.5.22",
     "vue-codemirror": "^4.0.6",
     "vue2-ace-editor": "^0.0.13"

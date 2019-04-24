@@ -2,19 +2,22 @@
 
   <div id="app">
     <b-container fluid>
-      <b-row class="mb-3 col">
-        <h1>JSON Schema Check</h1>
+      <b-row>
+        <b-col>
+          <h1>JSON Schema Check</h1>
+        </b-col>
       </b-row>
       <b-row class="mb-3">
         <b-col md="6">
-          <b-row class="mb-3 col">
-            <h2>Schema</h2>
-            <p>JSON Schema
-              <icon v-if="this.schemaJSONValid === true" :icon="['far', 'check-circle']" size="2x"></icon>
-              <icon v-else-if="this.schemaJSONValid === false" :icon="['far', 'times-circle']" size="2x"></icon>
-              <icon v-else :icon="['far', 'question-circle' ]" size="2x"></icon>
-            </p>
-            <p>Some text</p>
+          <b-row class="mb-3">
+            <b-col>
+              <h2>JSON Schema</h2>
+              <p>Valid JSON:
+                <icon v-if="this.schemaJSONValid === true" :icon="['far', 'check-circle']" size="2x" class="align-middle"></icon>
+                <icon v-else-if="this.schemaJSONValid === false" :icon="['far', 'times-circle']" size="2x" class="align-middle"></icon>
+                <icon v-else :icon="['far', 'question-circle' ]" size="2x" class="align-middle"></icon>
+              </p>
+            </b-col>
           </b-row>
           <b-row class="col">
             <!-- <textarea id="schema" v-model="schema" cols="100" rows="30" v-on:change="debug($event)"></textarea> -->
@@ -48,6 +51,8 @@
 <script>
 import _ from 'lodash';
 
+import CodeMirror from 'codemirror';
+
 import 'codemirror/theme/solarized.css'
 import 'codemirror/addon/lint/lint.css';
 import 'codemirror/mode/javascript/javascript.js'
@@ -55,11 +60,13 @@ import 'codemirror/mode/javascript/javascript.js'
 import 'codemirror/addon/lint/lint.js';
 import 'codemirror/addon/lint/json-lint.js';
 
+import 'codemirror/addon/display/panel.js';
+
+const jsonlint = require("jsonlint");
+window.jsonlint = jsonlint;
+
 const Ajv = require('ajv');
 // require('ajv-async')(Ajv);
-
-const jsonlint = require("jsonlint-mod");
-window.jsonlint = jsonlint;
 
 export default {
   name: 'app',
@@ -70,10 +77,7 @@ export default {
     editorInit: function () {
       require('brace/ext/language_tools') //language extension prerequsite...
       require('brace/mode/json')
-      // require('brace/mode/javascript')    //language
-      // require('brace/mode/less')
       require('brace/theme/chrome')
-      // require('brace/snippets/javascript') //snippet
     },
     validate: function() {
       this.checkingValidation = true
@@ -118,6 +122,13 @@ export default {
         return e;
       }
     },
+    jsonlintCheck: function(cm, updateLinting, options) {
+      if (this.$refs.schemaCM.codemirror === null) {
+        return [];
+      }
+      const errors = CodeMirror.lint.json(cm);
+      updateLinting(errors);
+    },
   },
   data: function () {
     return {
@@ -136,7 +147,10 @@ export default {
         styleActiveLine: true,
         lineNumbers: true,
         line: true,
-        lint: false,
+        lint: {
+          async: true,
+          getAnnotations: this.jsonlintCheck,
+        },
         viewportMargin: Infinity,
       },
     };
@@ -146,11 +160,11 @@ export default {
       // These three lines disable the linter if the content empty, only enabling linting if content has non whitespace content
       const schemaCM = this.$refs.schemaCM.codemirror;
       const lint = newVal.trim();
-      schemaCM.setOption("lint", lint);
+      // schemaCM.setOption("lint", lint);
 
 
       this.schemaJSONValid = null;
-      const response = this.checkJSONValid(newVal, 'schema');
+      // const response = this.checkJSONValid(newVal, 'schema');
       // if (!this.schemaValidJSON){
       //   this.schemaJSONErrors.push(e)
       // }
@@ -169,7 +183,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 .vue-codemirror {
@@ -179,3 +192,7 @@ export default {
   text-align: left;
 }
 </style>
+
+
+<!-- Trying to fix JSON linter to include error about duplicate keys
+also looking at using codemirror panel for buttons / as a toolbar -->
