@@ -22,7 +22,12 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 
 import {
-  faMinusCircle
+  faMinusCircle,
+  faCheckDouble,
+  faCircleNotch,
+  faCheck,
+  faClipboardList,
+  faTasks,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -30,6 +35,11 @@ library.add(
   faCheckCircle,
   faMinusCircle,
   faTimesCircle,
+  faCheckDouble,
+  faCircleNotch,
+  faCheck,
+  faClipboardList,
+  faTasks,
 );
 
 Vue.use(VueCodemirror);
