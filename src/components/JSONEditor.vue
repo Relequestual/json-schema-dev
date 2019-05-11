@@ -27,7 +27,7 @@ import _ from 'lodash';
 
 import CodeMirror from 'codemirror';
 
-import 'codemirror/theme/solarized.css'
+// import 'codemirror/theme/solarized.css';
 import 'codemirror/addon/lint/lint.css';
 import 'codemirror/mode/javascript/javascript.js'
 
@@ -44,6 +44,7 @@ export default {
   props: {
     fileName: String,
     jsonText: String,
+    theme: String,
   },
   methods: {
     debug: function(data) {
@@ -63,6 +64,13 @@ export default {
       this.$emit('update-valid-status', this.JSONValid);
       updateLinting(errors);
     },
+    changeTheme: function(theme) {
+      if(theme && theme !== 'default'){
+        // Solarized light and dark are the only themes which don't use their own CSS file.
+        theme = theme.replace(/\s.+/, '');
+        require('codemirror/theme/' + theme + '.css');
+      }
+    },
   },
   data: function () {
     return {
@@ -72,7 +80,7 @@ export default {
       JSONErrors: [],
       cmOption: {
         mode: 'application/json',
-        theme: 'solarized light',
+        theme: this.theme || 'default',
         gutters: ["CodeMirror-lint-markers"],
         tabSize: 4,
         foldGutter: true,
@@ -100,6 +108,10 @@ export default {
       //   this.schemaJSONErrors.push(e)
       // }
     }),
+    theme: function() {
+      this.changeTheme(this.theme);
+      this.$refs.cm.codemirror.setOption('theme', this.theme);
+    }
   },
   mounted: function() {
     this.$refs.cm.codemirror.setSize("100%", "500px");

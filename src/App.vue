@@ -23,10 +23,69 @@
         <b-col>
           <p class="mt-3">The home of JSON Schema validation right in your browser</p>
           <p>🚧Alpha 🚧</p>
+          Theme: <select v-model="editorTheme">
+              <option selected="">default</option>
+              <option>3024-day</option>
+              <option>3024-night</option>
+              <option>abcdef</option>
+              <option>ambiance</option>
+              <option>base16-dark</option>
+              <option>base16-light</option>
+              <option>bespin</option>
+              <option>blackboard</option>
+              <option>cobalt</option>
+              <option>colorforth</option>
+              <option>darcula</option>
+              <option>dracula</option>
+              <option>duotone-dark</option>
+              <option>duotone-light</option>
+              <option>eclipse</option>
+              <option>elegant</option>
+              <option>erlang-dark</option>
+              <option>gruvbox-dark</option>
+              <option>hopscotch</option>
+              <option>icecoder</option>
+              <option>idea</option>
+              <option>isotope</option>
+              <option>lesser-dark</option>
+              <option>liquibyte</option>
+              <option>lucario</option>
+              <option>material</option>
+              <option>mbo</option>
+              <option>mdn-like</option>
+              <option>midnight</option>
+              <option>monokai</option>
+              <option>neat</option>
+              <option>neo</option>
+              <option>night</option>
+              <option>nord</option>
+              <option>oceanic-next</option>
+              <option>panda-syntax</option>
+              <option>paraiso-dark</option>
+              <option>paraiso-light</option>
+              <option>pastel-on-dark</option>
+              <option>railscasts</option>
+              <option>rubyblue</option>
+              <option>seti</option>
+              <option>shadowfox</option>
+              <option>solarized dark</option>
+              <option>solarized light</option>
+              <option>the-matrix</option>
+              <option>tomorrow-night-bright</option>
+              <option>tomorrow-night-eighties</option>
+              <option>ttcn</option>
+              <option>twilight</option>
+              <option>vibrant-ink</option>
+              <option>xq-dark</option>
+              <option>xq-light</option>
+              <option>yeti</option>
+              <option>yonce</option>
+              <option>zenburn</option>
+          </select>
         </b-col>
       </b-row>
        <b-collapse id="features" visible>
-        <b-container>
+         <b-container>
             <b-card
               class="mb-2"
               header-tag="header"
@@ -67,16 +126,16 @@
               </b-card-group>
 
             </b-card>
-          </b-container>
+         </b-container>
       </b-collapse>
       <b-row class="mb-3">
         <b-col md="6">
           <h2>JSON Schema</h2>
-            <json-editor v-bind:jsonText.sync="primarySchemaText" v-on:update-valid-status="updateJSONLintValid('primarySchemaText', $event)"/>
+            <json-editor v-bind:jsonText.sync="primarySchemaText" v-on:update-valid-status="updateJSONLintValid('primarySchemaText', $event)" :theme="editorTheme" />
         </b-col>
         <b-col md="6">
           <h2>JSON instance</h2>
-            <json-editor v-bind:jsonText.sync="instanceText" v-on:update-valid-status="updateJSONLintValid('instanceText', $event)"/>
+            <json-editor v-bind:jsonText.sync="instanceText" v-on:update-valid-status="updateJSONLintValid('instanceText', $event)" :theme="editorTheme" />
         </b-col>
       </b-row>
       <b-row v-if="this.ajvSchemaError.length !== 0" align-h="center">
@@ -186,7 +245,7 @@ export default {
       // this.jsonLintValid[name] = valid;
     },
     debug: function(data) {
-      // console.log(data);
+      console.log(data);
     },
   },
   data: function () {
@@ -199,6 +258,7 @@ export default {
       ajvSchemaError: [],
       ajvValidationSuccess: null,
       jsonLintValid: {},
+      editorTheme: 'default',
     };
   },
   computed: {
