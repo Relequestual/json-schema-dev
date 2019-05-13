@@ -61,6 +61,8 @@ import 'codemirror/addon/lint/json-lint.js';
 
 import 'codemirror/addon/display/panel.js';
 
+import Vue from 'vue';
+
 const jsonlint = require("jsonlint");
 window.jsonlint = jsonlint;
 
@@ -129,10 +131,15 @@ export default {
   watch: {
     editorText: _.debounce( function (newVal) {
       this.$emit('update:jsonText', newVal);
+      // this.$refs.cm.codemirror.setValue(newVal);
       // if (!this.schemaValidJSON){
       //   this.schemaJSONErrors.push(e)
       // }
     }),
+    jsonText: function(newVal) {
+      // this.$emit('update:jsonText', newVal);
+      Vue.set(this, 'editorText', newVal);
+    },
     theme: function() {
       this.changeTheme(this.theme);
       this.$refs.cm.codemirror.setOption('theme', this.theme);
@@ -140,6 +147,7 @@ export default {
   },
   mounted: function() {
     this.$refs.cm.codemirror.setSize("100%", "500px");
+    // this.$refs.cm.codemirror.setValue();
   },
 }
 </script>

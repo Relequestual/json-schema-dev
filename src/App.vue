@@ -343,16 +343,6 @@ export default {
       this.debug(this.primarySchemaText);
       this.debug(this.instanceText);
 
-      // try {
-      //   this.schema = jsonlint.parse(this.primarySchemaText);
-      //   this.validSchemaJSON = true;
-      // } catch(e) {
-      //   this.validSchemaJSON = false;
-      //   this.checkingValidation = false
-      //   console.log(e);
-      //   return;
-      // }
-
       const schema = JSON.parse(this.primarySchemaText);
       const jsonInstance = JSON.parse(this.instanceText);
 
@@ -391,13 +381,20 @@ export default {
       this.debug(name);
       this.debug(valid);
       Vue.set(this.jsonLintValid, name, valid);
-      // this.jsonLintValid[name] = valid;
     },
     debug: function(data) {
       console.log(data);
     },
   },
   watch: {
+    primarySchemaText: function(newVal) {
+      console.log(newVal);
+      localStorage.setItem('primarySchemaText', newVal);
+    },
+    instanceText: function(newVal) {
+      console.log(newVal);
+      localStorage.setItem('instanceText', newVal);
+    },
     jsonLintValid: {
       handler: _.debounce( function () {
         this.ajvValidationSuccess = null;
@@ -413,12 +410,17 @@ export default {
       }),
       deep: true,
     },
-    // instanceText: _.debounce( function () {
-    //   this.validate();
-    // }, 1000),
-    // primarySchemaText: _.debounce( function () {
-    //   this.validate();
-    // }, 1000),
+  },
+  mounted: function() {
+    console.log('-----mounting');
+    if(localStorage.getItem('primarySchemaText')) {
+      // this.primarySchemaText = localStorage.primarySchemaText;
+      Vue.set(this, 'primarySchemaText', localStorage.getItem('primarySchemaText'));
+    }
+    if(localStorage.getItem('instanceText')) {
+      this.debug('local storage instanceText');
+      Vue.set(this, 'instanceText', localStorage.getItem('instanceText'));
+    }
   },
 }
 </script>
