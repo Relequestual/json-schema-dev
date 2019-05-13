@@ -46,7 +46,7 @@
           <p>🚧Alpha 🚧</p>
         </b-col>
       </b-row>
-      <b-collapse id="features" visible>
+      <b-collapse id="features" v-model="showFeatures">
         <b-container>
           <b-card
             class="mb-2"
@@ -141,7 +141,7 @@
           </b-card>
         </b-container>
       </b-collapse>
-      <b-collapse id="settings">
+      <b-collapse id="settings" v-model="showSettings">
         <b-container>
           <b-card class="mb-2" header-tag="header">
             <div slot="header">
@@ -222,6 +222,7 @@
         <b-col md="6">
           <h2>JSON Schema</h2>
           <json-editor
+            file-name="schema.json"
             :json-text.sync="primarySchemaText"
             :theme="editorTheme"
             @update-valid-status="updateJSONLintValid('primarySchemaText', $event)"
@@ -230,6 +231,7 @@
         <b-col md="6">
           <h2>JSON instance</h2>
           <json-editor
+            file-name="instance.json"
             :json-text.sync="instanceText"
             :theme="editorTheme"
             @update-valid-status="updateJSONLintValid('instanceText', $event)"
@@ -326,6 +328,8 @@ export default {
       ajvValidationSuccess: null,
       jsonLintValid: {},
       editorTheme: 'default',
+      showFeatures: false,
+      showSettings: false,
     };
   },
   computed: {
@@ -339,6 +343,9 @@ export default {
     },
     instanceText: function(newVal) {
       localStorage.setItem('instanceText', newVal);
+    },
+    showFeatures: function(newVal) {
+      localStorage.setItem('showFeatures', JSON.stringify(newVal));
     },
     jsonLintValid: {
       handler: _.debounce( function () {
@@ -356,6 +363,9 @@ export default {
     }
     if(localStorage.getItem('instanceText')) {
       Vue.set(this, 'instanceText', localStorage.getItem('instanceText'));
+    }
+    if(localStorage.getItem('showFeatures')) {
+      Vue.set(this, 'showFeatures', JSON.parse(localStorage.getItem('showFeatures')));
     }
   },
   methods: {
