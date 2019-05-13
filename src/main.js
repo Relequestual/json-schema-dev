@@ -28,6 +28,9 @@ import {
   faCheck,
   faClipboardList,
   faTasks,
+  faHandHoldingHeart,
+  faCogs,
+  faFileAlt,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -40,6 +43,9 @@ library.add(
   faCheck,
   faClipboardList,
   faTasks,
+  faHandHoldingHeart,
+  faCogs,
+  faFileAlt,
 );
 
 Vue.use(VueCodemirror);

@@ -17,13 +17,19 @@
           id="nav-collapse"
           is-nav
         >
-          <b-navbar-nav>
+          <b-navbar-nav class="ml-auto">
             <b-nav-item v-b-toggle.features>
-              Features
+              <icon :icon="['fas', 'hand-holding-heart']" class="mr-1" />Features
+            </b-nav-item>
+            <b-nav-item v-b-toggle.settings>
+              <icon :icon="['fas', 'cogs']" class="mr-1" />Settings
+            </b-nav-item>
+            <b-nav-item href="https://json-schema.org/specification.html" target="_blank">
+              <icon :icon="['fas', 'file-alt']" class="mr-1" />Specification
             </b-nav-item>
             <b-nav-item
               href="https://json-schema.org"
-              target="_blanks"
+              target="_blank"
             >
               JSON-Schema.org
             </b-nav-item>
@@ -59,11 +65,10 @@
             <b-card-text>
               <p>JSONSchema.dev allows you to try using and test JSON Schema quickly and easily.</p>
               <p>
-                Using the javascript library <a
-                  href="https://ajv.js.org/"
-                  target="_blank "
-                >ajv</a> for JSON Schema based validation, all validation happens in browser.
+                Using the javascript library <a href="https://ajv.js.org/" target="_blank ">ajv</a>
+                for JSON Schema based validation, all validation happens in browser.
               </p>
+              <p>All text is stored using local storage in your browser, so it will be here when you come back later.</p>
             </b-card-text>
             <b-card-group deck>
               <b-card
