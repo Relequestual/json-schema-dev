@@ -6,13 +6,13 @@
           <p>
             <span class="align-middle mr-1">Valid JSON:</span>
             <icon
-              v-if="this.JSONValid === true"
+              v-if="JSONValid === true"
               :icon="['far', 'check-circle']"
               size="2x"
               class="align-middle text-success"
             />
             <icon
-              v-else-if="this.JSONValid === false"
+              v-else-if="JSONValid === false"
               :icon="['far', 'times-circle']"
               size="2x"
               class="align-middle text-danger"
@@ -33,13 +33,13 @@
           :options="cmOption"
         />
       </b-row>
-      <b-row v-if="this.JSONValid === false">
+      <b-row v-if="JSONValid === false">
         <b-col>
           <b-alert
             show
             variant="danger"
           >
-            <code class="text-left"><pre>{{ this.jsonErrorMessage }}</pre></code>
+            <code class="text-left"><pre>{{ jsonErrorMessage }}</pre></code>
           </b-alert>
         </b-col>
       </b-row>
@@ -69,9 +69,18 @@ window.jsonlint = jsonlint;
 export default {
   name: 'JsonEditor',
   props: {
-    fileName: String,
-    jsonText: String,
-    theme: String,
+    fileName: {
+      type: String,
+      required: true,
+    },
+    jsonText: {
+      type: String,
+      default: '{}',
+    },
+    theme: {
+      type: String,
+      default: 'default',
+    },
   },
   data: function () {
     return {
@@ -98,34 +107,7 @@ export default {
   },
   computed: {
     jsonErrorMessage: function () {
-      console.log(this.JSONErrors);
       return this.JSONErrors.length === 0 ? '' : this.JSONErrors[0].message;
-    },
-  },
-  methods: {
-    debug: function(data) {
-      console.log(data);
-    },
-    jsonlintCheck: function(cm, updateLinting) { // This should be debounced
-      if (this.$refs.cm.codemirror === null) {
-        return [];
-      }
-      const errors = CodeMirror.lint.json(cm);
-      this.JSONErrors = errors;
-      if(errors.length === 0) {
-        this.JSONValid = true
-      } else {
-        this.JSONValid = false
-      }
-      this.$emit('update-valid-status', this.JSONValid);
-      updateLinting(errors);
-    },
-    changeTheme: function(theme) {
-      if(theme && theme !== 'default'){
-        // Solarized light and dark are the only themes which don't use their own CSS file.
-        theme = theme.replace(/\s.+/, '');
-        require('codemirror/theme/' + theme + '.css');
-      }
     },
   },
   watch: {
@@ -147,7 +129,29 @@ export default {
   },
   mounted: function() {
     this.$refs.cm.codemirror.setSize("100%", "500px");
-    // this.$refs.cm.codemirror.setValue();
+  },
+  methods: {
+    jsonlintCheck: function(cm, updateLinting) { // This should be debounced
+      if (this.$refs.cm.codemirror === null) {
+        return [];
+      }
+      const errors = CodeMirror.lint.json(cm);
+      this.JSONErrors = errors;
+      if(errors.length === 0) {
+        this.JSONValid = true
+      } else {
+        this.JSONValid = false
+      }
+      this.$emit('update-valid-status', this.JSONValid);
+      updateLinting(errors);
+    },
+    changeTheme: function(theme) {
+      if(theme && theme !== 'default'){
+        // Solarized light and dark are the only themes which don't use their own CSS file.
+        theme = theme.replace(/\s.+/, '');
+        require('codemirror/theme/' + theme + '.css');
+      }
+    },
   },
 }
 </script>

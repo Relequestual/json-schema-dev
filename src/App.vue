@@ -237,7 +237,7 @@
         </b-col>
       </b-row>
       <b-row
-        v-if="this.ajvSchemaError.length !== 0"
+        v-if="ajvSchemaError.length !== 0"
         align-h="center"
       >
         <b-col cols="8">
@@ -247,7 +247,7 @@
           >
             <h5>Schema Error</h5>
             <code
-              v-for="(error, i) in this.ajvSchemaError"
+              v-for="(error, i) in ajvSchemaError"
               :key="i"
               class="text-left"
             >
@@ -257,7 +257,7 @@
         </b-col>
       </b-row>
       <b-row
-        v-if="this.ajvValidationErrors.length !== 0"
+        v-if="ajvValidationErrors.length !== 0"
         align-h="center"
       >
         <b-col cols="8">
@@ -267,7 +267,7 @@
           >
             <h5>Validation Error</h5>
             <code
-              v-for="error in this.schemaValidationErrorMessages"
+              v-for="error in schemaValidationErrorMessages"
               :key="error"
               class="text-left"
             >
@@ -287,7 +287,7 @@
           >
             <h5>
               <icon
-                v-if="this.ajvValidationSuccess === true"
+                v-if="ajvValidationSuccess === true"
                 :icon="['far', 'check-circle']"
                 size="2x"
                 class="align-middle"
@@ -306,7 +306,6 @@ import Vue from 'vue';
 import _ from 'lodash';
 
 import JSONEditor from './components/JSONEditor.vue'
-// const jsonlint = require("jsonlint");
 
 const Ajv = require('ajv');
 // require('ajv-async')(Ajv);
@@ -334,14 +333,37 @@ export default {
       return this.ajvValidationErrors.map(error => this.formatSchemaErrors(error)) || [];
     },
   },
+  watch: {
+    primarySchemaText: function(newVal) {
+      localStorage.setItem('primarySchemaText', newVal);
+    },
+    instanceText: function(newVal) {
+      localStorage.setItem('instanceText', newVal);
+    },
+    jsonLintValid: {
+      handler: _.debounce( function () {
+        this.ajvValidationSuccess = null;
+        if(_.indexOf(Object.values(this.jsonLintValid), false) === -1){
+          this.validate();
+        }
+      }),
+      deep: true,
+    },
+  },
+  mounted: function() {
+    if(localStorage.getItem('primarySchemaText')) {
+      Vue.set(this, 'primarySchemaText', localStorage.getItem('primarySchemaText'));
+    }
+    if(localStorage.getItem('instanceText')) {
+      Vue.set(this, 'instanceText', localStorage.getItem('instanceText'));
+    }
+  },
   methods: {
     validate: function() {
       this.checkingValidation = true;
       this.ajvValidationSuccess = null;
       this.ajvSchemaError = [];
       this.ajvValidationErrors = [];
-      this.debug(this.primarySchemaText);
-      this.debug(this.instanceText);
 
       const schema = JSON.parse(this.primarySchemaText);
       const jsonInstance = JSON.parse(this.instanceText);
@@ -351,21 +373,17 @@ export default {
       const validSchema = ajv.validateSchema(schema);
 
       if(!validSchema) {
-        this.debug(ajv.errors);
         this.ajvSchemaError = ajv.errors;
         return;
       }
-      this.debug('+++IS valid schema');
 
       const validator = ajv.compile(schema);
       const result = validator(jsonInstance);
 
       if (result) {
-        this.debug('Data is valid', result);
         this.ajvValidationErrors = [];
         this.ajvValidationSuccess = true;
       } else {
-        this.debug('Validation errors:', validator.errors);
         this.ajvValidationErrors = validator.errors;
         this.ajvValidationSuccess = false;
       }
@@ -377,50 +395,8 @@ export default {
       return `${error.message}.\n${error.keyword} at "${error.schemaPath}"`;
     },
     updateJSONLintValid: function(name, valid) {
-      this.debug("event in main app");
-      this.debug(name);
-      this.debug(valid);
       Vue.set(this.jsonLintValid, name, valid);
     },
-    debug: function(data) {
-      console.log(data);
-    },
-  },
-  watch: {
-    primarySchemaText: function(newVal) {
-      console.log(newVal);
-      localStorage.setItem('primarySchemaText', newVal);
-    },
-    instanceText: function(newVal) {
-      console.log(newVal);
-      localStorage.setItem('instanceText', newVal);
-    },
-    jsonLintValid: {
-      handler: _.debounce( function () {
-        this.ajvValidationSuccess = null;
-        this.debug("jsonLintValid watch called");
-        this.debug(Object.values(this.jsonLintValid));
-        this.debug(_.indexOf(Object.values(this.jsonLintValid), false));
-        if(_.indexOf(Object.values(this.jsonLintValid), false) === -1){
-          this.debug("looks like there's nothing invalid");
-          this.validate();
-        } else {
-          this.debug("!!!looks like there's something invalid");
-        }
-      }),
-      deep: true,
-    },
-  },
-  mounted: function() {
-    console.log('-----mounting');
-    if(localStorage.getItem('primarySchemaText')) {
-      // this.primarySchemaText = localStorage.primarySchemaText;
-      Vue.set(this, 'primarySchemaText', localStorage.getItem('primarySchemaText'));
-    }
-    if(localStorage.getItem('instanceText')) {
-      this.debug('local storage instanceText');
-      Vue.set(this, 'instanceText', localStorage.getItem('instanceText'));
-    }
   },
 }
 </script>
@@ -441,7 +417,3 @@ export default {
   text-align: left;
 }
 </style>
-
-
-<!-- Trying to fix JSON linter to include error about duplicate keys
-also looking at using codemirror panel for buttons / as a toolbar -->
