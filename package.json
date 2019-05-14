@@ -43,9 +43,12 @@
       "eslint:recommended"
     ],
     "rules": {
-      "vue/max-attributes-per-line": ["error", {
-        "singleline": 2
-      }]
+      "vue/max-attributes-per-line": [
+        "error",
+        {
+          "singleline": 2
+        }
+      ]
     },
     "parserOptions": {
       "parser": "babel-eslint"
