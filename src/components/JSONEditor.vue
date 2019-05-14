@@ -27,11 +27,24 @@
         </b-col>
       </b-row>
       <b-row class="mb-3">
-        <codemirror
-          ref="cm"
-          v-model="editorText"
-          :options="cmOption"
-        />
+        <b-col>
+          <b-card no-body class="p-2">
+            <b-button-toolbar>
+              <b-button-group class="ml-auto">
+                <b-button variant="outline-dark" @click="autoIndentEditorText()">
+                  <icon :icon="['fas', 'indent']" />
+                </b-button>
+              </b-button-group>
+            </b-button-toolbar>
+          </b-card>
+          <div>
+            <codemirror
+              ref="cm"
+              v-model="editorText"
+              :options="cmOption"
+            />
+          </div>
+        </b-col>
       </b-row>
       <b-row v-if="JSONValid === false">
         <b-col>
@@ -152,6 +165,13 @@ export default {
         require('codemirror/theme/' + theme + '.css');
       }
     },
+    autoIndentEditorText: function() {
+      console.log('===called stringify')
+      if(this.JSONValid) {
+        const newVal = JSON.stringify(JSON.parse(this.editorText), null, 2);
+        Vue.set(this, 'editorText', newVal);
+      }
+    }
   },
 }
 </script>

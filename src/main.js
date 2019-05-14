@@ -31,6 +31,7 @@ import {
   faHandHoldingHeart,
   faCogs,
   faFileAlt,
+  faIndent,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -46,6 +47,7 @@ library.add(
   faHandHoldingHeart,
   faCogs,
   faFileAlt,
+  faIndent,
 );
 
 Vue.use(VueCodemirror);
