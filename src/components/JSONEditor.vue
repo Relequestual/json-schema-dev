@@ -65,14 +65,11 @@ import _ from 'lodash';
 
 import CodeMirror from 'codemirror';
 
-// import 'codemirror/theme/solarized.css';
 import 'codemirror/addon/lint/lint.css';
-import 'codemirror/mode/javascript/javascript.js'
+import 'codemirror/mode/javascript/javascript.js';
 
 import 'codemirror/addon/lint/lint.js';
 import 'codemirror/addon/lint/json-lint.js';
-
-import 'codemirror/addon/display/panel.js';
 
 import Vue from 'vue';
 
