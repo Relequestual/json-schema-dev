@@ -316,7 +316,7 @@
 import Vue from 'vue';
 import _ from 'lodash';
 
-import JSONEditor from './components/JSONEditor.vue'
+import JSONEditor from './components/JSONEditor.vue';
 
 const Ajv = require('ajv');
 // require('ajv-async')(Ajv);
