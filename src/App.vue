@@ -416,7 +416,7 @@ export default {
 
     },
     formatSchemaErrors: function(error) {
-      return `${error.message}.\n${error.keyword} at "${error.schemaPath}"`;
+      return `${error.message}.\n${error.keyword} at "${error.schemaPath}"\nInstance location: "${error.dataPath}"`;
     },
     validateIfPossible: _.debounce( function () {
       if(_.indexOf(Object.values(this.jsonLintValid), false) === -1){
