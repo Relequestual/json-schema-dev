@@ -10,7 +10,9 @@
           <span class="text-success">
             {<icon :icon="['fas', 'check-double']" />}
           </span>
-          JSONSchema.dev - Validation
+          JSONSchema.dev -
+        </b-navbar-brand>
+        <b-navbar-brand href="#results">
           {
           <icon :icon="['fas', 'check-double']" :class="ajvValidationSuccess === true ? 'text-success' : ''" />
           /
@@ -55,9 +57,8 @@
       <b-row>
         <b-col>
           <p class="mt-3">
-            The home of JSON Schema validation right in your browser
+            The home of JSON Schema validation right in your browser - 🚧Alpha 🚧 - draft-7 only
           </p>
-          <p>🚧Alpha 🚧</p>
         </b-col>
       </b-row>
       <b-collapse id="features" v-model="showFeatures">
