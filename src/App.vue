@@ -11,6 +11,11 @@
             {<icon :icon="['fas', 'check-double']" />}
           </span>
           JSONSchema.dev - Validation
+          {
+          <icon :icon="['fas', 'check-double']" :class="ajvValidationSuccess === true ? 'text-success' : ''" />
+          /
+          <icon :icon="['fas', 'times']" :class="ajvValidationSuccess === false ? 'text-danger' : ''" />
+          }
         </b-navbar-brand>
         <b-navbar-toggle target="nav-collapse" />
         <b-collapse
