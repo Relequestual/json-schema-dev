@@ -349,20 +349,20 @@ export default {
   watch: {
     primarySchemaText: function(newVal) {
       localStorage.setItem('primarySchemaText', newVal);
+      this.validateIfPossible();
     },
     instanceText: function(newVal) {
       localStorage.setItem('instanceText', newVal);
+      this.validateIfPossible();
     },
     showFeatures: function(newVal) {
       localStorage.setItem('showFeatures', JSON.stringify(newVal));
     },
     jsonLintValid: {
-      handler: _.debounce( function () {
+      handler: function () {
         this.ajvValidationSuccess = null;
-        if(_.indexOf(Object.values(this.jsonLintValid), false) === -1){
-          this.validate();
-        }
-      }),
+        this.validateIfPossible();
+      },
       deep: true,
     },
   },
@@ -413,6 +413,11 @@ export default {
     formatSchemaErrors: function(error) {
       return `${error.message}.\n${error.keyword} at "${error.schemaPath}"`;
     },
+    validateIfPossible: _.debounce( function () {
+      if(_.indexOf(Object.values(this.jsonLintValid), false) === -1){
+        this.validate();
+      }
+    }, 300),
     updateJSONLintValid: function(name, valid) {
       Vue.set(this.jsonLintValid, name, valid);
     },
