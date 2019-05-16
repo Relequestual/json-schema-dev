@@ -32,6 +32,7 @@ import {
   faCogs,
   faFileAlt,
   faIndent,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -48,6 +49,7 @@ library.add(
   faCogs,
   faFileAlt,
   faIndent,
+  faTimes,
 );
 
 Vue.use(VueCodemirror);
