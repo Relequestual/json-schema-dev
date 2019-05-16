@@ -52,6 +52,15 @@ library.add(
   faTimes,
 );
 
+import VueAnalytics from 'vue-analytics'
+
+Vue.use(VueAnalytics, {
+  id: 'UA-140186694-1',
+  debug: {
+    sendHitTask: process.env.NODE_ENV === 'production',
+  }
+})
+
 Vue.use(VueCodemirror);
 
 Vue.component('icon', FontAwesomeIcon);

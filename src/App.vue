@@ -407,9 +407,13 @@ export default {
       if (result) {
         this.ajvValidationErrors = [];
         this.ajvValidationSuccess = true;
+        if(this.primarySchemaText != '{}') {
+          this.$ga.event('overall validation', 'validate', 'true');
+        }
       } else {
         this.ajvValidationErrors = validator.errors;
         this.ajvValidationSuccess = false;
+        this.$ga.event('overall validation', 'validate', 'false');
       }
 
       this.checkingValidation = false
