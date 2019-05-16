@@ -31,7 +31,11 @@
           <b-card no-body class="p-2">
             <b-button-toolbar>
               <b-button-group class="ml-auto">
-                <b-button variant="outline-dark" @click="autoIndentEditorText()">
+                <b-button
+                  title="Auto indent"
+                  variant="outline-dark"
+                  @click="autoIndentEditorText()"
+                >
                   <icon :icon="['fas', 'indent']" />
                 </b-button>
               </b-button-group>
@@ -102,7 +106,7 @@ export default {
         mode: 'application/json',
         theme: this.theme || 'default',
         gutters: ["CodeMirror-lint-markers"],
-        tabSize: 4,
+        tabSize: 2,
         foldGutter: true,
         styleActiveLine: true,
         lineNumbers: true,
@@ -112,6 +116,12 @@ export default {
           getAnnotations: this.jsonlintCheck,
         },
         viewportMargin: Infinity,
+        extraKeys: {
+          Tab: function(cm) {
+            var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+            cm.replaceSelection(spaces);
+          }
+        },
       },
     };
   },
