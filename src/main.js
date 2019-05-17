@@ -35,6 +35,11 @@ import {
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 
+import {
+  faGithub,
+  faTwitter,
+} from '@fortawesome/free-brands-svg-icons';
+
 library.add(
   faQuestionCircle,
   faCheckCircle,
@@ -50,6 +55,8 @@ library.add(
   faFileAlt,
   faIndent,
   faTimes,
+  faGithub,
+  faTwitter,
 );
 
 import VueAnalytics from 'vue-analytics'
