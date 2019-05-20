@@ -373,7 +373,7 @@ export default {
       ajvValidationSuccess: null,
       jsonLintValid: {},
       editorTheme: 'default',
-      showFeatures: false,
+      showFeatures: true,
       showSettings: false,
     };
   },
@@ -404,7 +404,7 @@ export default {
       deep: true,
     },
   },
-  mounted: function() {
+  beforeMount: function() {
     if(localStorage.getItem('primarySchemaText')) {
       Vue.set(this, 'primarySchemaText', localStorage.getItem('primarySchemaText'));
     }
