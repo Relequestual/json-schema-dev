@@ -178,7 +178,7 @@ export default {
         const newVal = JSON.stringify(JSON.parse(this.editorText), null, 2);
         Vue.set(this, 'editorText', newVal);
       }
-    }
+    },
   },
 }
 </script>

@@ -233,6 +233,7 @@
           </b-card>
         </b-container>
       </b-collapse>
+      <share-bar :schema="primarySchemaText" :instance="instanceText" />
       <b-row class="mb-3">
         <b-col md="6">
           <h2>JSON Schema</h2>
@@ -352,7 +353,10 @@
 import Vue from 'vue';
 import _ from 'lodash';
 
+import LZ from 'lz-string';
+
 import JSONEditor from './components/JSONEditor.vue';
+import ShareBar from './components/ShareBar.vue';
 
 const Ajv = require('ajv');
 // require('ajv-async')(Ajv);
@@ -361,6 +365,7 @@ export default {
   name: 'App',
   components: {
     'json-editor': JSONEditor,
+    'share-bar': ShareBar,
   },
   data: function () {
     return {
@@ -381,6 +386,10 @@ export default {
     schemaValidationErrorMessages: function () {
       return this.ajvValidationErrors.map(error => this.formatSchemaErrors(error)) || [];
     },
+    allJSONValid: function () {
+       const lintResults = Object.values(this.jsonLintValid);
+      return (lintResults.length !== 0 && lintResults.every(v => v === true));
+    }
   },
   watch: {
     primarySchemaText: function(newVal) {
@@ -405,14 +414,33 @@ export default {
     },
   },
   beforeMount: function() {
+    if(localStorage.getItem('showFeatures')) {
+      Vue.set(this, 'showFeatures', JSON.parse(localStorage.getItem('showFeatures')));
+    }
+
+    const sharedData = _.get(this, '$router.currentRoute.query.shareData', undefined);
+    if (sharedData !== undefined) {
+      try {
+        const data = JSON.parse(LZ.decompressFromEncodedURIComponent(sharedData));
+          if(data.hasOwnProperty('s') && data.hasOwnProperty('i')) {
+            Vue.set(this, 'primarySchemaText', data.s);
+            Vue.set(this, 'instanceText', data.i);
+            this.$ga.event('Share Link', 'load data');
+          }else{
+            alert('The data contained in the URL you were provided is invalid. Sorry.');
+          }
+      } catch (e) {
+        this.$ga.exception(`URL decode error: ${e.message}\n\nData: "${sharedData}"`);
+        alert('The data contained in the URL you were provided is invalid. Sorry.');
+      }
+      return;
+    }
+
     if(localStorage.getItem('primarySchemaText')) {
       Vue.set(this, 'primarySchemaText', localStorage.getItem('primarySchemaText'));
     }
     if(localStorage.getItem('instanceText')) {
       Vue.set(this, 'instanceText', localStorage.getItem('instanceText'));
-    }
-    if(localStorage.getItem('showFeatures')) {
-      Vue.set(this, 'showFeatures', JSON.parse(localStorage.getItem('showFeatures')));
     }
   },
   methods: {
@@ -456,8 +484,7 @@ export default {
       return `${error.message}.\n${error.keyword} at "${error.schemaPath}"\nInstance location: "${error.dataPath}"`;
     },
     validateIfPossible: _.debounce( function () {
-      const lintResults = Object.values(this.jsonLintValid);
-      if(lintResults.length !== 0 && lintResults.every(v => v === true)){
+      if(this.allJSONValid){
         this.validate();
       }
     }, 300),
