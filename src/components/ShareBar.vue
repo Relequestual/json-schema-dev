@@ -4,17 +4,11 @@
       <b-col md="8" class="ml-auto mr-auto">
         <b-input-group>
           <b-input-group-text slot="prepend" :class="`${shareURL == null ? '' : 'text-success'}`">
-            Share data link
+            Share schema
             <icon
-              v-if="shareURL == null"
+              :class="{'text-muted': shareURL === null}"
               :icon="['far', 'check-circle']"
               class="align-middle ml-1"
-            />
-            <icon
-              v-else
-              :icon="['far', 'check-circle']"
-              class="align-middle ml-1"
-              spin
             />
           </b-input-group-text>
           <b-form-input
@@ -33,7 +27,6 @@
               <icon
                 v-else
                 :icon="['far', 'clipboard']"
-                spin
               />
             </b-button>
           </b-input-group-append>
@@ -78,6 +71,10 @@ export default {
       type: String,
       required: true,
     },
+    isStale: {
+      type: Boolean,
+      required: true,
+    },
   },
   data () {
     return {
@@ -94,12 +91,9 @@ export default {
   },
   computed: {
     shareURL: function () {
-      if (this.compressedData === null) {
-        return null;
-      }
-      const domain = window.location.origin;
-      const shareURL = `${domain}?shareData=${this.compressedData || ''}`;
-      return shareURL;
+      const {origin} = window.location;
+
+      return this.compressedData ? `${origin}/s/${this.compressedData}` : null;
     },
   },
   watch: {
@@ -112,18 +106,20 @@ export default {
     }
   },
   mounted: function() {
-    this.updateShareURL();
+    if (this.isStale) {
+      this.updateShareURL();
+    }
     this.watchForDataChange();
   },
   methods: {
     updateShareURL: _.debounce(function() {
       const compressed = LZ.compressToEncodedURIComponent(JSON.stringify({
-        s: this.schema, i: this.instance
+        s: this.schema,
+        i: this.instance
       }));
       Vue.set(this, 'compressedData', compressed);
-
       Vue.set(this, 'copiedLink', false);
-    }),
+    }, 250),
     showLink: function() {
       this.showShareLink = true;
     },
@@ -152,9 +148,3 @@ export default {
   },
 }
 </script>
-
-<style type="text/css">
-  .fa-spin {
-    animation-iteration-count: initial;
-  }
-</style>

@@ -1,18 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-Vue.use(VueRouter)
-import App from './App.vue';
-
+import VueClipboard from 'vue-clipboard2';
+import VueAnalytics from 'vue-analytics';
 import BootstrapVue from 'bootstrap-vue';
-Vue.use(BootstrapVue);
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-
 import VueCodemirror from 'vue-codemirror';
-
-// require styles
-import 'codemirror/lib/codemirror.css';
-
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -44,6 +35,30 @@ import {
   faTwitter,
 } from '@fortawesome/free-brands-svg-icons';
 
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'codemirror/lib/codemirror.css';
+
+import App from './App.vue';
+
+Vue.use(VueRouter)
+Vue.use(BootstrapVue);
+Vue.use(VueAnalytics, {
+  id: 'UA-140186694-1',
+  autoTracking: {
+    exception: true,
+  },
+  debug: {
+    sendHitTask: process.env.NODE_ENV === 'production',
+  }
+});
+Vue.use(VueClipboard);
+Vue.use(VueCodemirror);
+Vue.component('icon', FontAwesomeIcon);
+Vue.component('icon-layers', FontAwesomeLayers)
+
+Vue.config.productionTip = false;
+
 library.add(
   faQuestionCircle,
   faCheckCircle,
@@ -65,36 +80,14 @@ library.add(
   faClipboardCheck,
 );
 
-import VueAnalytics from 'vue-analytics';
-
-
-Vue.use(VueAnalytics, {
-  id: 'UA-140186694-1',
-  autoTracking: {
-    exception: true,
-  },
-  debug: {
-    sendHitTask: process.env.NODE_ENV === 'production',
-  }
-});
-
-import VueClipboard from 'vue-clipboard2';
-
-Vue.use(VueClipboard);
-
-Vue.use(VueCodemirror);
-
-Vue.component('icon', FontAwesomeIcon);
-
-Vue.component('icon-layers', FontAwesomeLayers)
-
-Vue.config.productionTip = false;
-
 const router = new VueRouter({
   mode: 'history',
   routes: [
     {
       path: '/', component: App,
+    },
+    {
+      path: '/s/:data', component: App,
     }
   ],
 })
