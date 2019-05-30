@@ -61,6 +61,28 @@
           </p>
         </b-col>
       </b-row>
+
+      <b-row v-if="errorMessage !== null" align-h="center">
+        <b-col>
+          <b-alert
+            variant="danger"
+            show
+            dismissable
+          >
+            {{ errorMessage }}
+
+            <button
+              type="button"
+              class="close"
+              aria-label="Dismiss"
+              @click="dismissError"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </b-alert>
+        </b-col>
+      </b-row>
+
       <b-collapse id="features" v-model="showFeatures">
         <b-container>
           <b-card
@@ -233,7 +255,11 @@
           </b-card>
         </b-container>
       </b-collapse>
-      <share-bar :schema="primarySchemaText" :instance="instanceText" />
+      <share-bar
+        :schema="primarySchemaText"
+        :instance="instanceText"
+        :is-stale="isStale"
+      />
       <b-row class="mb-3">
         <b-col md="6">
           <h2>JSON Schema</h2>
@@ -361,6 +387,17 @@ import ShareBar from './components/ShareBar.vue';
 const Ajv = require('ajv');
 // require('ajv-async')(Ajv);
 
+const defaultPrimarySchemaText = "{\n\n}";
+const defaultInstanceText = "{\n\n}";
+
+const tryParse = (data) => {
+  try {
+    return JSON.parse(LZ.decompressFromEncodedURIComponent(data))
+  } catch {
+    return null
+  }
+}
+
 export default {
   name: 'App',
   components: {
@@ -369,10 +406,11 @@ export default {
   },
   data: function () {
     return {
+      errorMessage: null,
       checkingValidation: false,
       schema: null,
-      primarySchemaText: "{\n\n}",
-      instanceText: "{\n\n}" ,
+      primarySchemaText: defaultPrimarySchemaText,
+      instanceText: defaultInstanceText,
       ajvValidationErrors: [],
       ajvSchemaError: [],
       ajvValidationSuccess: null,
@@ -383,6 +421,12 @@ export default {
     };
   },
   computed: {
+    isStale: function() {
+      const isSchemaStale = this.primarySchemaText !== defaultPrimarySchemaText;
+      const isInstanceStale = this.instanceText !== defaultInstanceText;
+
+      return isSchemaStale || isInstanceStale;
+    },
     schemaValidationErrorMessages: function () {
       return this.ajvValidationErrors.map(error => this.formatSchemaErrors(error)) || [];
     },
@@ -418,32 +462,48 @@ export default {
       Vue.set(this, 'showFeatures', JSON.parse(localStorage.getItem('showFeatures')));
     }
 
-    const sharedData = _.get(this, '$router.currentRoute.query.shareData', undefined);
-    if (sharedData !== undefined) {
-      try {
-        const data = JSON.parse(LZ.decompressFromEncodedURIComponent(sharedData));
-          if(data.hasOwnProperty('s') && data.hasOwnProperty('i')) {
-            Vue.set(this, 'primarySchemaText', data.s);
-            Vue.set(this, 'instanceText', data.i);
-            this.$ga.event('Share Link', 'load data');
-          }else{
-            alert('The data contained in the URL you were provided is invalid. Sorry.');
-          }
-      } catch (e) {
-        this.$ga.exception(`URL decode error: ${e.message}\n\nData: "${sharedData}"`);
-        alert('The data contained in the URL you were provided is invalid. Sorry.');
-      }
-      return;
-    }
+    const data = _.get(this, '$route.params.data');
 
-    if(localStorage.getItem('primarySchemaText')) {
-      Vue.set(this, 'primarySchemaText', localStorage.getItem('primarySchemaText'));
-    }
-    if(localStorage.getItem('instanceText')) {
-      Vue.set(this, 'instanceText', localStorage.getItem('instanceText'));
+    if (data) {
+      this.loadFromUrl(data)
+    } else {
+      this.loadFromLocalStorage()
     }
   },
   methods: {
+    dismissError() {
+      Vue.set(this, "errorMessage", null)
+    },
+    loadFromUrl(data) {
+      const {i,s} = tryParse(data) || {i: null, s: null};
+
+      if (!s && !i) {
+        this.$ga.exception(`URL decode error\n\nData: "${data}"`);
+        Vue.set(this, 'errorMessage', 'Failed to load data from URL. Sorry.');
+        this.$router.replace('/');
+      }
+
+      if (i) {
+        Vue.set(this, 'instanceText', i);
+        this.$ga.event('Share Link', 'loaded instance');
+
+      }
+
+      if (s) {
+        Vue.set(this, 'primarySchemaText', s);
+        this.$ga.event('Share Link', 'loaded schema');
+      }
+
+      this.$router.replace('/');
+    },
+    loadFromLocalStorage() {
+      if(localStorage.getItem('primarySchemaText')) {
+        Vue.set(this, 'primarySchemaText', localStorage.getItem('primarySchemaText'));
+      }
+      if(localStorage.getItem('instanceText')) {
+        Vue.set(this, 'instanceText', localStorage.getItem('instanceText'));
+      }
+    },
     validate: function() {
       this.checkingValidation = true;
       this.ajvValidationSuccess = null;
