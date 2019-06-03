@@ -458,11 +458,15 @@ export default {
     },
   },
   beforeMount: function() {
-    if(localStorage.getItem('showFeatures')) {
-      Vue.set(this, 'showFeatures', JSON.parse(localStorage.getItem('showFeatures')));
-    }
-
     const data = _.get(this, '$route.params.data');
+
+    if(!data) {
+      if(localStorage.getItem('showFeatures')) {
+        Vue.set(this, 'showFeatures', JSON.parse(localStorage.getItem('showFeatures')));
+      }
+    } else {
+      Vue.set(this, 'showFeatures', false);
+    }
 
     if (data) {
       this.loadFromUrl(data)
