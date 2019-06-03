@@ -71,7 +71,7 @@ export default {
       type: String,
       required: true,
     },
-    isStale: {
+    isDefault: {
       type: Boolean,
       required: true,
     },
@@ -106,7 +106,7 @@ export default {
     }
   },
   mounted: function() {
-    if (this.isStale) {
+    if (!this.isDefault) {
       this.updateShareURL();
     }
     this.watchForDataChange();
