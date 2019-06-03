@@ -12,9 +12,11 @@
             />
           </b-input-group-text>
           <b-form-input
+            class="share-url"
             v-model="shareURL"
             placeholder="Shareable link not ready"
             @focus="$event.target.select()"
+            readonly
           />
           <b-input-group-append>
             <b-button variant="outline-dark" @click="copyLink()">
@@ -148,3 +150,9 @@ export default {
   },
 }
 </script>
+
+<style>
+  .share-url:read-only {
+    background-color: white;
+  }
+</style>
