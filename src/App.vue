@@ -258,7 +258,7 @@
       <share-bar
         :schema="primarySchemaText"
         :instance="instanceText"
-        :is-stale="isStale"
+        :is-default="isDefault"
       />
       <b-row class="mb-3">
         <b-col md="6">
@@ -421,11 +421,11 @@ export default {
     };
   },
   computed: {
-    isStale: function() {
-      const isSchemaStale = this.primarySchemaText !== defaultPrimarySchemaText;
-      const isInstanceStale = this.instanceText !== defaultInstanceText;
+    isDefault: function() {
+      const isSchemaDefault = this.primarySchemaText === defaultPrimarySchemaText;
+      const isInstanceDefault = this.instanceText === defaultInstanceText;
 
-      return isSchemaStale || isInstanceStale;
+      return isSchemaDefault && isInstanceDefault;
     },
     schemaValidationErrorMessages: function () {
       return this.ajvValidationErrors.map(error => this.formatSchemaErrors(error)) || [];
