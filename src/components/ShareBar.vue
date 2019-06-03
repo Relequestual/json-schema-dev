@@ -15,7 +15,7 @@
             class="share-url"
             v-model="shareURL"
             placeholder="Shareable link not ready"
-            @focus="$event.target.select()"
+            @click="selectLinkText"
             readonly
           />
           <b-input-group-append>
@@ -114,6 +114,9 @@ export default {
     this.watchForDataChange();
   },
   methods: {
+    selectLinkText(event) {
+      event.target.setSelectionRange(0, event.target.value.length);
+    },
     updateShareURL: _.debounce(function() {
       const compressed = LZ.compressToEncodedURIComponent(JSON.stringify({
         s: this.schema,
