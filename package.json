@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "postbuild": "cp ./netify.toml ./docs/netify.toml"
+    "postbuild": "cp ./netlify.toml ./docs/netlify.toml"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
