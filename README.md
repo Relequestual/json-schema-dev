@@ -26,9 +26,9 @@ The main javascript package for JSON Schema boasts many dependants, including We
 
 The [most popular](https://insights.stackoverflow.com/survey/2019#development-environments-and-tools) text editor / IDE, Microsoft's VS Code, supports JSON Schema validation [out of the box](https://code.visualstudio.com/Docs/languages/json#_json-schemas-and-settings).
 
-Here are some of the other companies and organisations that use JSON Schema, from a [presentation](https://speakerdeck.com/relequestual/json-schema-intro-and-workshop-ga4gh-hinxton-2019).
+Here are some of the other companies and organisations that use JSON Schema, from a [presentation](https://speakerdeck.com/relequestual/json-schema-intro-and-workshop-ga4gh-hinxton-2019). (These are not endorsements.)
 
-![Not an endorsement](assets/use-json-schema.png)
+![Image of orgs](assets/uses-json-schema.png)
 
 
 ## Contributing
