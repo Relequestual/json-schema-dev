@@ -12,11 +12,11 @@
             />
           </b-input-group-text>
           <b-form-input
-            class="share-url"
             v-model="shareURL"
+            class="share-url"
             placeholder="Shareable link not ready"
-            @click="selectLinkText"
             readonly
+            @click="selectLinkText"
           />
           <b-input-group-append>
             <b-button variant="outline-dark" @click="copyLink()">

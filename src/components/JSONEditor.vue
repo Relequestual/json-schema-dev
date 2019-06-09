@@ -173,7 +173,6 @@ export default {
       }
     },
     autoIndentEditorText: function() {
-      console.log('===called stringify')
       if(this.JSONValid) {
         const newVal = JSON.stringify(JSON.parse(this.editorText), null, 2);
         Vue.set(this, 'editorText', newVal);
@@ -192,5 +191,3 @@ export default {
   text-align: left;
 }
 </style>
-
-
