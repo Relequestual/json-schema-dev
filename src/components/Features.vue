@@ -43,9 +43,10 @@
                 target="_blank"
               >json lint</a> for schema and instance JSON
             </b-list-group-item>
+            <b-list-group-item>Shareable JSON Schema and JSON Instance example</b-list-group-item>
             <b-list-group-item>In editor JSON lint error reporting</b-list-group-item>
             <b-list-group-item>
-              JSON Schema based validation using <a
+              JSON instance validation using JSON Schema <a
                 href="https://ajv.js.org/"
                 target="_blank "
               >ajv</a>
@@ -74,17 +75,19 @@
               <icon
                 :icon="['fas', 'tasks']"
                 class="text-info mr-2"
-              />Edit in YAML with live JSON translation
+              />Shorter sharing URLs
             </b-list-group-item>
             <b-list-group-item>
               <icon
                 :icon="['fas', 'tasks']"
                 class="text-info mr-2"
-              />In editor JSON Schema validation error reporting
+              />Edit in YAML or JS with live JSON translation
             </b-list-group-item>
-            <b-list-group-item>Shareable JSON Schema and JSON Instance example</b-list-group-item>
-            <b-list-group-item>JSON Schema Lint</b-list-group-item>
+            <b-list-group-item>
+              In editor JSON Schema validation error reporting
+            </b-list-group-item>
             <b-list-group-item>Save and load JSON Schema and JSON Instance via Github</b-list-group-item>
+            <b-list-group-item>JSON Schema Lint</b-list-group-item>
             <b-list-group-item>Multi-file JSON Schema support to allow for referencing</b-list-group-item>
             <b-list-group-item>JSON Schema unit testing</b-list-group-item>
           </b-list-group>
