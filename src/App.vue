@@ -115,7 +115,7 @@ export default {
       ajvValidationSuccess: null,
       jsonLintValid: {},
       editorTheme: 'default',
-      showFeatures: true,
+      showFeatures: false,
       showSettings: false,
     };
   },
