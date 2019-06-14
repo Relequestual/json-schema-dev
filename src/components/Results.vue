@@ -4,7 +4,7 @@
       v-if="ajvSchemaError.length !== 0"
       align-h="center"
     >
-      <b-col cols="8">
+      <b-col cols="12" md="8">
         <b-alert
           show
           variant="danger"
@@ -24,7 +24,7 @@
       v-if="ajvValidationSuccess === false && ajvValidationErrors.length !== 0"
       align-h="center"
     >
-      <b-col cols="8">
+      <b-col cols="12" md="8">
         <b-alert
           show
           variant="danger"
@@ -44,7 +44,7 @@
       v-if="ajvValidationSuccess === true"
       align-h="center"
     >
-      <b-col cols="8">
+      <b-col cols="12" md="8">
         <b-alert
           show
           variant="success"
