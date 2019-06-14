@@ -70,7 +70,7 @@ export default {
   props: {
     ajvValidationSuccess: {
       type: Boolean,
-      required: true,
+      default: null,
     },
     ajvSchemaError: {
       type: Array,
