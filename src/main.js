@@ -7,12 +7,15 @@ import VueCodemirror from 'vue-codemirror';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 
-import {FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome';
+import {
+  FontAwesomeIcon,
+  FontAwesomeLayers,
+} from '@fortawesome/vue-fontawesome';
 import {
   faQuestionCircle,
   faCheckCircle,
   faTimesCircle,
-  faClipboard
+  faClipboard,
 } from '@fortawesome/free-regular-svg-icons';
 
 import {
@@ -30,10 +33,7 @@ import {
   faClipboardCheck,
 } from '@fortawesome/free-solid-svg-icons';
 
-import {
-  faGithub,
-  faTwitter,
-} from '@fortawesome/free-brands-svg-icons';
+import { faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -41,7 +41,7 @@ import 'codemirror/lib/codemirror.css';
 
 import App from './App.vue';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(VueAnalytics, {
   id: 'UA-140186694-1',
@@ -50,12 +50,12 @@ Vue.use(VueAnalytics, {
   },
   debug: {
     sendHitTask: process.env.NODE_ENV === 'production',
-  }
+  },
 });
 Vue.use(VueClipboard);
 Vue.use(VueCodemirror);
 Vue.component('icon', FontAwesomeIcon);
-Vue.component('icon-layers', FontAwesomeLayers)
+Vue.component('icon-layers', FontAwesomeLayers);
 
 Vue.config.productionTip = false;
 
@@ -77,20 +77,22 @@ library.add(
   faGithub,
   faTwitter,
   faClipboard,
-  faClipboardCheck,
+  faClipboardCheck
 );
 
 const router = new VueRouter({
   mode: 'history',
   routes: [
     {
-      path: '/', component: App,
+      path: '/',
+      component: App,
     },
     {
-      path: '/s/:data', component: App,
-    }
+      path: '/s/:data',
+      component: App,
+    },
   ],
-})
+});
 
 new Vue({
   render: h => h(App),

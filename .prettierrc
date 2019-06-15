@@ -2,4 +2,4 @@ trailingComma: "es5"
 tabWidth: 2
 singleQuote: true
 requirePragma: false
-bracketSpacing: ture
+bracketSpacing: true

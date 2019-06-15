@@ -1,9 +1,5 @@
 <template>
-  <b-alert
-    variant="danger"
-    show
-    dismissable
-  >
+  <b-alert variant="danger" show dismissable>
     {{ errorMessage }}
 
     <button
@@ -24,7 +20,7 @@ export default {
     errorMessage: {
       type: String,
       required: true,
-    }
+    },
   },
-}
+};
 </script>

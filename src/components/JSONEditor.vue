@@ -19,7 +19,7 @@
             />
             <icon
               v-else
-              :icon="['far', 'question-circle' ]"
+              :icon="['far', 'question-circle']"
               size="2x"
               class="align-middle"
             />
@@ -42,21 +42,16 @@
             </b-button-toolbar>
           </b-card>
           <div>
-            <codemirror
-              ref="cm"
-              v-model="editorText"
-              :options="cmOption"
-            />
+            <codemirror ref="cm" v-model="editorText" :options="cmOption" />
           </div>
         </b-col>
       </b-row>
       <b-row v-if="JSONValid === false">
         <b-col>
-          <b-alert
-            show
-            variant="danger"
-          >
-            <code class="text-left"><pre>{{ jsonErrorMessage }}</pre></code>
+          <b-alert show variant="danger">
+            <code class="text-left"
+              ><pre>{{ jsonErrorMessage }}</pre></code
+            >
           </b-alert>
         </b-col>
       </b-row>
@@ -77,7 +72,7 @@ import 'codemirror/addon/lint/json-lint.js';
 
 import Vue from 'vue';
 
-const jsonlint = require("jsonlint");
+const jsonlint = require('jsonlint');
 window.jsonlint = jsonlint;
 
 export default {
@@ -96,7 +91,7 @@ export default {
       default: 'default',
     },
   },
-  data: function () {
+  data: function() {
     return {
       editorText: this.jsonText,
       checkingValidation: false,
@@ -105,7 +100,7 @@ export default {
       cmOption: {
         mode: 'application/json',
         theme: this.theme || 'default',
-        gutters: ["CodeMirror-lint-markers"],
+        gutters: ['CodeMirror-lint-markers'],
         tabSize: 2,
         foldGutter: true,
         styleActiveLine: true,
@@ -118,20 +113,20 @@ export default {
         viewportMargin: Infinity,
         extraKeys: {
           Tab: function(cm) {
-            var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+            var spaces = Array(cm.getOption('indentUnit') + 1).join(' ');
             cm.replaceSelection(spaces);
-          }
+          },
         },
       },
     };
   },
   computed: {
-    jsonErrorMessage: function () {
+    jsonErrorMessage: function() {
       return this.JSONErrors.length === 0 ? '' : this.JSONErrors[0].message;
     },
   },
   watch: {
-    editorText: _.debounce( function (newVal) {
+    editorText: _.debounce(function(newVal) {
       this.$emit('update:jsonText', newVal);
       // this.$refs.cm.codemirror.setValue(newVal);
       // if (!this.schemaValidJSON){
@@ -145,45 +140,45 @@ export default {
     theme: function() {
       this.changeTheme(this.theme);
       this.$refs.cm.codemirror.setOption('theme', this.theme);
-    }
+    },
   },
   mounted: function() {
-    this.$refs.cm.codemirror.setSize("100%", "500px");
+    this.$refs.cm.codemirror.setSize('100%', '500px');
   },
   methods: {
-    jsonlintCheck: function(cm, updateLinting) { // This should be debounced
+    jsonlintCheck: function(cm, updateLinting) {
+      // This should be debounced
       if (this.$refs.cm.codemirror === null) {
         return [];
       }
       const errors = CodeMirror.lint.json(cm);
       this.JSONErrors = errors;
-      if(errors.length === 0) {
-        this.JSONValid = true
+      if (errors.length === 0) {
+        this.JSONValid = true;
       } else {
-        this.JSONValid = false
+        this.JSONValid = false;
       }
       this.$emit('update-valid-status', this.JSONValid);
       updateLinting(errors);
     },
     changeTheme: function(theme) {
-      if(theme && theme !== 'default'){
+      if (theme && theme !== 'default') {
         // Solarized light and dark are the only themes which don't use their own CSS file.
         theme = theme.replace(/\s.+/, '');
         require('codemirror/theme/' + theme + '.css');
       }
     },
     autoIndentEditorText: function() {
-      if(this.JSONValid) {
+      if (this.JSONValid) {
         const newVal = JSON.stringify(JSON.parse(this.editorText), null, 2);
         Vue.set(this, 'editorText', newVal);
       }
     },
   },
-}
+};
 </script>
 
 <style>
-
 .vue-codemirror {
   border: 1px solid #eee;
   height: 100%;

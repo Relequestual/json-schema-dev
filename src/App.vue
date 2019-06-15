@@ -5,7 +5,8 @@
       <b-row>
         <b-col>
           <p class="mt-3">
-            The home of JSON Schema validation right in your browser - 🚧Alpha 🚧 - draft-7 only
+            The home of JSON Schema validation right in your browser - 🚧Alpha
+            🚧 - draft-7 only
           </p>
         </b-col>
       </b-row>
@@ -38,7 +39,9 @@
             file-name="schema.json"
             :json-text.sync="primarySchemaText"
             :theme="editorTheme"
-            @update-valid-status="updateJSONLintValid('primarySchemaText', $event)"
+            @update-valid-status="
+              updateJSONLintValid('primarySchemaText', $event)
+            "
           />
         </b-col>
         <b-col md="6">
@@ -80,30 +83,30 @@ import Footer from './components/Footer.vue';
 const Ajv = require('ajv');
 // require('ajv-async')(Ajv);
 
-const defaultPrimarySchemaText = "{\n\n}";
-const defaultInstanceText = "{\n\n}";
+const defaultPrimarySchemaText = '{\n\n}';
+const defaultInstanceText = '{\n\n}';
 
-const tryParse = (data) => {
+const tryParse = data => {
   try {
-    return JSON.parse(LZ.decompressFromEncodedURIComponent(data))
+    return JSON.parse(LZ.decompressFromEncodedURIComponent(data));
   } catch {
-    return null
+    return null;
   }
-}
+};
 
 export default {
   name: 'App',
   components: {
     'json-editor': JSONEditor,
     'share-bar': ShareBar,
-    'navigation': Navigation,
-    'features': Features,
-    'settings': Settings,
+    navigation: Navigation,
+    features: Features,
+    settings: Settings,
     'error-message': ErrorMessage,
-    'results': Results,
+    results: Results,
     'footer-bar': Footer,
   },
-  data: function () {
+  data: function() {
     return {
       errorMessage: null,
       checkingValidation: false,
@@ -121,18 +124,22 @@ export default {
   },
   computed: {
     isDefault: function() {
-      const isSchemaDefault = this.primarySchemaText === defaultPrimarySchemaText;
+      const isSchemaDefault =
+        this.primarySchemaText === defaultPrimarySchemaText;
       const isInstanceDefault = this.instanceText === defaultInstanceText;
 
       return isSchemaDefault && isInstanceDefault;
     },
-    schemaValidationErrorMessages: function () {
-      return this.ajvValidationErrors.map(error => this.formatSchemaErrors(error)) || [];
+    schemaValidationErrorMessages: function() {
+      return (
+        this.ajvValidationErrors.map(error => this.formatSchemaErrors(error)) ||
+        []
+      );
     },
-    allJSONValid: function () {
-       const lintResults = Object.values(this.jsonLintValid);
-      return (lintResults.length !== 0 && lintResults.every(v => v === true));
-    }
+    allJSONValid: function() {
+      const lintResults = Object.values(this.jsonLintValid);
+      return lintResults.length !== 0 && lintResults.every(v => v === true);
+    },
   },
   watch: {
     primarySchemaText: function(newVal) {
@@ -149,7 +156,7 @@ export default {
       localStorage.setItem('showFeatures', JSON.stringify(newVal));
     },
     jsonLintValid: {
-      handler: function () {
+      handler: function() {
         this.ajvValidationSuccess = null;
         this.validateIfPossible();
       },
@@ -159,26 +166,30 @@ export default {
   beforeMount: function() {
     const data = _.get(this, '$route.params.data');
 
-    if(!data) {
-      if(localStorage.getItem('showFeatures')) {
-        Vue.set(this, 'showFeatures', JSON.parse(localStorage.getItem('showFeatures')));
+    if (!data) {
+      if (localStorage.getItem('showFeatures')) {
+        Vue.set(
+          this,
+          'showFeatures',
+          JSON.parse(localStorage.getItem('showFeatures'))
+        );
       }
     } else {
       Vue.set(this, 'showFeatures', false);
     }
 
     if (data) {
-      this.loadFromUrl(data)
+      this.loadFromUrl(data);
     } else {
-      this.loadFromLocalStorage()
+      this.loadFromLocalStorage();
     }
   },
   methods: {
     dismissError() {
-      Vue.set(this, "errorMessage", null)
+      Vue.set(this, 'errorMessage', null);
     },
     loadFromUrl(data) {
-      const {i,s} = tryParse(data) || {i: null, s: null};
+      const { i, s } = tryParse(data) || { i: null, s: null };
 
       if (!s && !i) {
         this.$ga.exception(`URL decode error\n\nData: "${data}"`);
@@ -189,7 +200,6 @@ export default {
       if (i) {
         Vue.set(this, 'instanceText', i);
         this.$ga.event('Share Link', 'loaded instance');
-
       }
 
       if (s) {
@@ -200,10 +210,14 @@ export default {
       this.$router.replace('/');
     },
     loadFromLocalStorage() {
-      if(localStorage.getItem('primarySchemaText')) {
-        Vue.set(this, 'primarySchemaText', localStorage.getItem('primarySchemaText'));
+      if (localStorage.getItem('primarySchemaText')) {
+        Vue.set(
+          this,
+          'primarySchemaText',
+          localStorage.getItem('primarySchemaText')
+        );
       }
-      if(localStorage.getItem('instanceText')) {
+      if (localStorage.getItem('instanceText')) {
         Vue.set(this, 'instanceText', localStorage.getItem('instanceText'));
       }
     },
@@ -220,7 +234,7 @@ export default {
 
       const validSchema = ajv.validateSchema(schema);
 
-      if(!validSchema) {
+      if (!validSchema) {
         this.ajvSchemaError = ajv.errors;
         return;
       }
@@ -231,7 +245,7 @@ export default {
       if (result) {
         this.ajvValidationErrors = [];
         this.ajvValidationSuccess = true;
-        if(this.primarySchemaText != '{}') {
+        if (this.primarySchemaText != '{}') {
           this.$ga.event('overall validation', 'validate', 'true');
         }
       } else {
@@ -240,25 +254,24 @@ export default {
         this.$ga.event('overall validation', 'validate', 'false');
       }
 
-      this.checkingValidation = false
-
+      this.checkingValidation = false;
     },
     formatSchemaErrors: function(error) {
       return `${error.message}.\n${error.keyword} at "${error.schemaPath}"\nInstance location: "${error.dataPath}"`;
     },
-    validateIfPossible: _.debounce( function () {
-      if(this.allJSONValid){
+    validateIfPossible: _.debounce(function() {
+      if (this.allJSONValid) {
         this.validate();
       }
     }, 300),
     updateJSONLintValid: function(name, valid) {
       Vue.set(this.jsonLintValid, name, valid);
     },
-    updateEditorTheme: function (theme) {
+    updateEditorTheme: function(theme) {
       Vue.set(this, 'editorTheme', theme);
     },
   },
-}
+};
 </script>
 
 <style>
