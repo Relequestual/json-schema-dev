@@ -1,29 +1,19 @@
-// import _ from 'lodash';
 import LZ from 'lz-string';
 
 const compressData = data => LZ.compressToEncodedURIComponent(JSON.stringify(data));
 
-const generateDataURL = data => `${window.location.origin}/s/${data}`;
+const generateDataURL = data => `/s/${data}`;
 
-const genSaveURL = ({sharedSchema, sharedInstance}, vueRouter) => {
+const genSaveURL = ({sharedSchema, sharedInstance}) => {
 
   const compressedData = compressData({
     s: sharedSchema,
     i: sharedInstance,
   });
 
-  const dataURL = generateDataURL(compressedData);
+  const url =  generateDataURL(compressedData);
 
-  // generate short URL
-
-  vueRouter.push(dataURL);
+  return url
 };
 
-export {
-  genSaveURL,
-};
-
-// Alternatively export and define in one line
-// export const genSaveURL = () => { ... }
-
-// export default genSaveURL;
+export {genSaveURL}

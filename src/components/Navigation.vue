@@ -51,9 +51,7 @@
 </template>
 
 <script>
-
-import genSaveURL from '../utilities/saveURL';
-// import { genSaveURL } from '../utilities/saveURL.js';
+import {genSaveURL} from '../utilities/saveURL';
 
 
 export default {
@@ -73,7 +71,9 @@ export default {
   },
   methods: {
     saveURLClick: function() {
-      genSaveURL({ sharedSchema: this.schema, sharedInstance: this.instance}, this.$router);
+      const url = genSaveURL({ sharedSchema: this.schema, sharedInstance: this.instance});
+
+      this.$router.replace(url);
     }
   }
 };
