@@ -19,8 +19,11 @@ const genSaveURL = ({sharedSchema, sharedInstance}, vueRouter) => {
   vueRouter.push(dataURL);
 };
 
-module.exports = {
-  genSaveURL: genSaveURL,
+export {
+  genSaveURL,
 };
+
+// Alternatively export and define in one line
+// export const genSaveURL = () => { ... }
 
 // export default genSaveURL;
