@@ -8492,3 +8492,8 @@ yorkie@^2.0.0:
     is-ci "^1.0.10"
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
+
+yourls-api@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/yourls-api/-/yourls-api-2.1.0.tgz#dc3a281f584666599e41246545f2a0b4b8201d3b"
+  integrity sha1-3DooH1hGZlmeQSRlRfKgtLggHTs=

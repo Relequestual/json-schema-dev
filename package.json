@@ -27,7 +27,8 @@
     "vue-analytics": "^5.16.4",
     "vue-clipboard2": "^0.3.0",
     "vue-codemirror": "^4.0.6",
-    "vue-router": "^3.0.6"
+    "vue-router": "^3.0.6",
+    "yourls-api": "^2.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",

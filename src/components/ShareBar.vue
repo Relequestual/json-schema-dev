@@ -35,13 +35,20 @@
         </b-input-group>
       </b-col>
     </b-row>
-    <b-alert v-if="linkBytes > 2000" show variant="warning" dismissible>
+    <b-alert
+      v-if="linkBytes > 2000"
+      show
+      variant="warning"
+      dismissible
+    >
       <p>
         The link being generated is over 2000 bytes ({{ linkBytes }}), and may
         be
-        <a :href="linkSizeLink" class="alert-link" target="_blank"
-          >too long to share in some places and browsers</a
-        >.
+        <a
+          :href="linkSizeLink"
+          class="alert-link"
+          target="_blank"
+        >too long to share in some places and browsers</a>.
       </p>
       <p>Consider using a smaller schema and instance for sharing.</p>
       <p>Sharing using GitHub Gists is planned.</p>

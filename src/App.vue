@@ -5,8 +5,7 @@
       <b-row>
         <b-col>
           <p class="mt-3">
-            The home of JSON Schema validation right in your browser - 🚧Alpha
-            🚧 - draft-7 only
+            The home of JSON Schema validation right in your browser 🚧 Alpha 🚧 draft-7 only
           </p>
         </b-col>
       </b-row>
