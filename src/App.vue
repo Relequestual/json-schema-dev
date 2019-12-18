@@ -1,19 +1,25 @@
 <template>
   <div id="app">
-    <navigation :ajv-validation-success="ajvValidationSuccess" />
+    <navigation :ajv-validation-success="ajvValidationSuccess">
+      <template v-slot:save-button>
+        <save-button
+          :schema="primarySchemaText"
+          :instance="instanceText"
+        />
+      </template>
+    </navigation>
     <b-container fluid>
       <b-row>
         <b-col>
           <p class="mt-3">
-            The home of JSON Schema validation right in your browser - 🚧Alpha
-            🚧 - draft-7 only
+            The home of JSON Schema validation right in your browser 🚧 Alpha 🚧 draft-7 only
           </p>
         </b-col>
       </b-row>
 
       <b-row v-if="errorMessage !== null" align-h="center">
         <b-col>
-          <error-message error-message="errorMessage" />
+          <error-message :error-message="errorMessage" />
         </b-col>
       </b-row>
       <b-collapse id="features" v-model="showFeatures">
@@ -27,12 +33,7 @@
         />
       </b-collapse>
 
-      <share-bar
-        :schema="primarySchemaText"
-        :instance="instanceText"
-        :is-default="isDefault"
-      />
-      <b-row class="mb-3">
+      <b-row class="mb-3 no-gutters">
         <b-col md="6">
           <h2>JSON Schema</h2>
           <json-editor
@@ -72,13 +73,15 @@ import _ from 'lodash';
 import LZ from 'lz-string';
 
 import JSONEditor from './components/JSONEditor.vue';
-import ShareBar from './components/ShareBar.vue';
+import SaveButton from './components/SaveButton.vue';
 import Navigation from './components/Navigation.vue';
 import Features from './components/Features.vue';
 import Settings from './components/Settings.vue';
 import ErrorMessage from './components/ErrorMessage.vue';
 import Results from './components/Results.vue';
 import Footer from './components/Footer.vue';
+
+import shortner from './utilities/shortner.js';
 
 const Ajv = require('ajv');
 // require('ajv-async')(Ajv);
@@ -98,7 +101,7 @@ export default {
   name: 'App',
   components: {
     'json-editor': JSONEditor,
-    'share-bar': ShareBar,
+    'save-button': SaveButton,
     navigation: Navigation,
     features: Features,
     settings: Settings,
@@ -188,14 +191,29 @@ export default {
     dismissError() {
       Vue.set(this, 'errorMessage', null);
     },
-    loadFromUrl(data) {
-      const { i, s } = tryParse(data) || { i: null, s: null };
+    loadFromUrl: async function (data) {
+      let json = tryParse(data);
 
-      if (!s && !i) {
+      if(!json) {
+        // Load from remote URL and try again...
+        const decodedData = await shortner.retrieveDataFromURL(data).catch((reason) =>{
+          Vue.set(this, 'errorMessage', reason.message);
+        });
+        if(!decodedData) {
+          return;
+        }
+        json = tryParse(decodedData);
+      }
+
+
+      if (!json) {
         this.$ga.exception(`URL decode error\n\nData: "${data}"`);
         Vue.set(this, 'errorMessage', 'Failed to load data from URL. Sorry.');
         this.$router.replace('/');
+        return;
       }
+
+      const {i, s} = json;
 
       if (i) {
         Vue.set(this, 'instanceText', i);
@@ -207,7 +225,7 @@ export default {
         this.$ga.event('Share Link', 'loaded schema');
       }
 
-      this.$router.replace('/');
+      // this.$router.replace('/');
     },
     loadFromLocalStorage() {
       if (localStorage.getItem('primarySchemaText')) {

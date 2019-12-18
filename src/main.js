@@ -31,6 +31,7 @@ import {
   faIndent,
   faTimes,
   faClipboardCheck,
+  faCloudUploadAlt,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -77,7 +78,8 @@ library.add(
   faGithub,
   faTwitter,
   faClipboard,
-  faClipboardCheck
+  faClipboardCheck,
+  faCloudUploadAlt
 );
 
 const router = new VueRouter({
