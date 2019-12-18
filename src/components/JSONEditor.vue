@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-container fluid>
-      <b-row class="mb-3">
+    <b-container fluid class="p-0">
+      <b-row class="mb-3 no-gutters">
         <b-col>
           <p>
             <span class="align-middle mr-1">Valid JSON:</span>
@@ -26,7 +26,7 @@
           </p>
         </b-col>
       </b-row>
-      <b-row class="mb-3">
+      <b-row class="mb-3 no-gutters">
         <b-col>
           <b-card no-body class="p-2">
             <b-button-toolbar>
@@ -42,16 +42,20 @@
             </b-button-toolbar>
           </b-card>
           <div>
-            <codemirror ref="cm" v-model="editorText" :options="cmOption" />
+            <codemirror
+              ref="cm"
+              v-model="editorText"
+              :options="cmOption"
+            />
           </div>
         </b-col>
       </b-row>
       <b-row v-if="JSONValid === false">
         <b-col>
           <b-alert show variant="danger">
-            <code class="text-left"
-              ><pre>{{ jsonErrorMessage }}</pre></code
-            >
+            <code
+              class="text-left"
+            ><pre>{{ jsonErrorMessage }}</pre></code>
           </b-alert>
         </b-col>
       </b-row>
