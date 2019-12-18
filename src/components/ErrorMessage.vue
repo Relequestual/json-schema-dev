@@ -1,15 +1,16 @@
 <template>
-  <b-alert variant="danger" show dismissable>
+  <b-alert
+    variant="danger"
+    show
+    dismissible
+  >
     {{ errorMessage }}
 
     <button
       type="button"
       class="close"
       aria-label="Dismiss"
-      @click="dismissError"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
+    />
   </b-alert>
 </template>
 
