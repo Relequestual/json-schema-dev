@@ -27,7 +27,7 @@ export default {
     saveURLClick: async function() {
       const url = await shorter.genSaveURL({ sharedSchema: this.schema, sharedInstance: this.instance});
       const shortURL = await shorter.shortenURL(url);
-      this.$router.replace(`s/${shortURL}`);
+      this.$router.replace(`/s/${shortURL}`);
     }
   },
 }

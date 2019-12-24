@@ -19,8 +19,15 @@
 
       <b-row v-if="errorMessage !== null" align-h="center">
         <b-col>
-          <error-message :error-message="errorMessage" />
+          <b-alert variant="danger" show dismissible>
+            {{ errorMessage }}
+          </b-alert>
         </b-col>
+      </b-row>
+      <b-row v-if="infoMessage !== null" align-h="center">
+        <b-alert variant="info" show dismissible>
+          {{ infoMessage }}
+        </b-alert>
       </b-row>
       <b-collapse id="features" v-model="showFeatures">
         <features />
@@ -33,16 +40,24 @@
         />
       </b-collapse>
 
-      <b-row class="mb-3 no-gutters">
+      <b-row class="mb-3 no-gutters vld-parent">
+        <loading
+          :active="loadingData"
+          :is-full-page="false"
+          :opacity="0.6"
+          :z-index="999"
+        >
+          <slot slot="before">
+            <h1>Loading Data</h1>
+          </slot>
+        </loading>
         <b-col md="6">
           <h2>JSON Schema</h2>
           <json-editor
             file-name="schema.json"
             :json-text.sync="primarySchemaText"
             :theme="editorTheme"
-            @update-valid-status="
-              updateJSONLintValid('primarySchemaText', $event)
-            "
+            @update-valid-status="updateJSONLintValid('primarySchemaText', $event)"
           />
         </b-col>
         <b-col md="6">
@@ -77,11 +92,16 @@ import SaveButton from './components/SaveButton.vue';
 import Navigation from './components/Navigation.vue';
 import Features from './components/Features.vue';
 import Settings from './components/Settings.vue';
-import ErrorMessage from './components/ErrorMessage.vue';
 import Results from './components/Results.vue';
 import Footer from './components/Footer.vue';
 
 import shortner from './utilities/shortner.js';
+
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
+// Init plugin
+Vue.use(Loading);
 
 const Ajv = require('ajv');
 // require('ajv-async')(Ajv);
@@ -105,13 +125,15 @@ export default {
     navigation: Navigation,
     features: Features,
     settings: Settings,
-    'error-message': ErrorMessage,
     results: Results,
     'footer-bar': Footer,
+    loading: Loading,
   },
   data: function() {
     return {
       errorMessage: null,
+      infoMessage: null,
+      loadingData: true,
       checkingValidation: false,
       schema: null,
       primarySchemaText: defaultPrimarySchemaText,
@@ -166,7 +188,7 @@ export default {
       deep: true,
     },
   },
-  beforeMount: function() {
+  beforeMount: async function() {
     const data = _.get(this, '$route.params.data');
 
     if (!data) {
@@ -182,10 +204,11 @@ export default {
     }
 
     if (data) {
-      this.loadFromUrl(data);
+      await this.loadFromUrl(data);
     } else {
       this.loadFromLocalStorage();
     }
+    Vue.set(this, 'loadingData', false);
   },
   methods: {
     dismissError() {
@@ -240,6 +263,9 @@ export default {
       }
     },
     validate: function() {
+      if(this.loadingData){
+        return;
+      }
       this.checkingValidation = true;
       this.ajvValidationSuccess = null;
       this.ajvSchemaError = [];
