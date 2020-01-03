@@ -228,7 +228,6 @@ export default {
         json = tryParse(decodedData);
       }
 
-
       if (!json) {
         this.$ga.exception(`URL decode error\n\nData: "${data}"`);
         Vue.set(this, 'errorMessage', 'Failed to load data from URL. Sorry.');
@@ -247,8 +246,6 @@ export default {
         Vue.set(this, 'primarySchemaText', s);
         this.$ga.event('Share Link', 'loaded schema');
       }
-
-      // this.$router.replace('/');
     },
     loadFromLocalStorage() {
       if (localStorage.getItem('primarySchemaText')) {
