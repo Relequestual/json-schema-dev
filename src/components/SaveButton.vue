@@ -71,10 +71,15 @@ export default {
   methods: {
     saveURLClick: async function() {
       Vue.set(this, 'saving', true);
-      const url = await shorter.genSaveURL({ sharedSchema: this.schema, sharedInstance: this.instance});
-      const shortURL = await shorter.shortenURL(url);
-      this.$router.replace(`/s/${shortURL}`);
-      Vue.set(this, 'saved', true);
+      try{
+        const url = await shorter.genSaveURL({ sharedSchema: this.schema, sharedInstance: this.instance});
+        const shortURL = await shorter.shortenURL(url);
+        this.$router.replace(`/s/${shortURL}`);
+        Vue.set(this, 'saved', true);
+      } catch(e) {
+        this.resetData();
+        this.$emit('error', e.message);
+      }
     },
     resetData: function (){
       const data = initialData();

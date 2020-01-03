@@ -33,6 +33,9 @@ const shortenURL = async (url) => {
   }
 
   const result = await shorten(url);
+  if(result.status === 'fail') {
+    throw new Error(`Unable to save URL  - ${result.message}`);
+  }
   return result.url.keyword;
 }
 

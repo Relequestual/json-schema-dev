@@ -5,6 +5,7 @@
         <save-button
           :schema="primarySchemaText"
           :instance="instanceText"
+          @error="handleError"
         />
       </template>
     </navigation>
@@ -19,7 +20,7 @@
 
       <b-row v-if="errorMessage !== null" align-h="center">
         <b-col>
-          <b-alert variant="danger" show dismissible>
+          <b-alert variant="danger" show dismissible @dismissed="clearError">
             {{ errorMessage }}
           </b-alert>
         </b-col>
@@ -311,6 +312,12 @@ export default {
     updateEditorTheme: function(theme) {
       Vue.set(this, 'editorTheme', theme);
     },
+    handleError: function (error) {
+      Vue.set(this, 'errorMessage', error);
+    },
+    clearError: function() {
+      Vue.set(this, 'errorMessage', null);
+    }
   },
 };
 </script>
