@@ -30,31 +30,29 @@
           <b-list-group flush>
             <b-list-group-item>
               JSON linting using
-              <a href="https://github.com/zaach/jsonlint" target="_blank"
-                >json lint</a
-              >
+              <a href="https://github.com/zaach/jsonlint" target="_blank">json lint</a>
               for schema and instance JSON
             </b-list-group-item>
-            <b-list-group-item
-              >Shareable JSON Schema and JSON Instance
-              example</b-list-group-item
-            >
-            <b-list-group-item
-              >In editor JSON lint error reporting</b-list-group-item
-            >
+            <b-list-group-item>
+              Shareable JSON Schema and JSON Instance
+              example
+            </b-list-group-item>
+            <b-list-group-item>
+              In editor JSON lint error reporting
+            </b-list-group-item>
             <b-list-group-item>
               JSON instance validation using JSON Schema
               <a href="https://ajv.js.org/" target="_blank ">ajv</a>
             </b-list-group-item>
-            <b-list-group-item
-              >Basic JSON Schema sanity checks using ajv</b-list-group-item
-            >
-            <b-list-group-item
-              >JSON Schema validation error reporting</b-list-group-item
-            >
-            <b-list-group-item
-              >Edit in style with your choice of themes</b-list-group-item
-            >
+            <b-list-group-item>
+              Basic JSON Schema sanity checks using ajv
+            </b-list-group-item>
+            <b-list-group-item>
+              JSON Schema validation error reporting
+            </b-list-group-item>
+            <b-list-group-item>
+              Edit in style with your choice of themes
+            </b-list-group-item>
             <b-list-group-item>Auto format JSON</b-list-group-item>
           </b-list-group>
         </b-card>
@@ -75,15 +73,15 @@
             <b-list-group-item>
               In editor JSON Schema validation error reporting
             </b-list-group-item>
-            <b-list-group-item
-              >Save and load JSON Schema and JSON Instance via
-              Github</b-list-group-item
-            >
+            <b-list-group-item>
+              Save and load JSON Schema and JSON Instance via
+              Github
+            </b-list-group-item>
             <b-list-group-item>JSON Schema Lint</b-list-group-item>
-            <b-list-group-item
-              >Multi-file JSON Schema support to allow for
-              referencing</b-list-group-item
-            >
+            <b-list-group-item>
+              Multi-file JSON Schema support to allow for
+              referencing
+            </b-list-group-item>
             <b-list-group-item>JSON Schema unit testing</b-list-group-item>
           </b-list-group>
         </b-card>

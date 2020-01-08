@@ -32,13 +32,13 @@
     "yourls": "^1.0.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.4.0",
-    "@vue/cli-plugin-eslint": "^3.4.0",
-    "@vue/cli-service": "^3.4.0",
+    "@vue/cli-plugin-babel": "^4.1.2",
+    "@vue/cli-plugin-eslint": "^4.1.2",
+    "@vue/cli-service": "^4.1.2",
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.16.0",
-    "eslint-config-prettier": "^4.3.0",
-    "eslint-plugin-vue": "^5.2.2",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-vue": "^6.1.2",
     "prettier": "^1.18.2",
     "vue-template-compiler": "^2.5.21"
   },
@@ -47,6 +47,9 @@
     "env": {
       "node": true
     },
+    "plugins": [
+      "vue"
+    ],
     "extends": [
       "plugin:vue/essential",
       "plugin:vue/recommended",
@@ -57,7 +60,11 @@
       "vue/max-attributes-per-line": [
         "error",
         {
-          "singleline": 5
+          "singleline": 5,
+          "multiline": {
+            "max": 1,
+            "allowFirstLine": true
+          }
         }
       ]
     },
