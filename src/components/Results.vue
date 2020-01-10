@@ -32,7 +32,6 @@
         <b-alert show variant="success">
           <h5>
             <icon
-              v-if="ajvValidationSuccess === true"
               :icon="['far', 'check-circle']"
               size="2x"
               class="align-middle"

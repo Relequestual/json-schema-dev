@@ -41,6 +41,26 @@
         />
       </b-collapse>
 
+      <b-row v-if="!firstEvaluation && !loadingData" align-h="center" justify-content-md-center>
+        <b-col lg="4" sm="6">
+          <b-alert v-if="allJSONValid === false" show variant="danger">
+            Invalid JSON. Scroll for errors.
+          </b-alert>
+          <b-alert v-else-if="ajvSchemaError.length !== 0" show variant="danger">
+            JSON Schema invalid. Scroll for errors.
+          </b-alert>
+          <b-alert v-else-if="ajvValidationSuccess === null" show variant="info">
+            Checking validation
+          </b-alert>
+          <b-alert v-if="ajvValidationSuccess === true" show variant="success">
+            Instance Validation Successful
+          </b-alert>
+          <b-alert v-if="ajvValidationSuccess === false" show variant="danger">
+            Instance Validation Failed. Scroll for errors.
+          </b-alert>
+        </b-col>
+      </b-row>
+
       <b-row class="mb-3 no-gutters vld-parent">
         <loading
           :active="loadingData"
@@ -135,6 +155,7 @@ export default {
       errorMessage: null,
       infoMessage: null,
       loadingData: true,
+      firstEvaluation: true,
       checkingValidation: false,
       schema: null,
       primarySchemaText: defaultPrimarySchemaText,
@@ -146,6 +167,8 @@ export default {
       editorTheme: 'default',
       showFeatures: false,
       showSettings: false,
+      // Expect this will be determined using a computed at some point
+      numberOfEditors: 2,
     };
   },
   computed: {
@@ -185,6 +208,10 @@ export default {
       handler: function() {
         this.ajvValidationSuccess = null;
         this.validateIfPossible();
+        const lintResults = Object.values(this.jsonLintValid);
+        if(lintResults.length === this.numberOfEditors && lintResults.every(v => v !== null)){
+          this.$set(this, 'firstEvaluation', false);
+        }
       },
       deep: true,
     },
@@ -260,11 +287,10 @@ export default {
         Vue.set(this, 'instanceText', localStorage.getItem('instanceText'));
       }
     },
-    validate: function() {
+    validate: async function() {
       if(this.loadingData){
         return;
       }
-      this.checkingValidation = true;
       this.ajvValidationSuccess = null;
       this.ajvSchemaError = [];
       this.ajvValidationErrors = [];
@@ -303,6 +329,7 @@ export default {
     },
     validateIfPossible: _.debounce(function() {
       if (this.allJSONValid) {
+      this.$set(this, 'checkingValidation', true);
         this.validate();
       }
     }, 300),
