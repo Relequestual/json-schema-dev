@@ -1,6 +1,6 @@
 <template>
   <div style="height:100px">
-    <b-container fluid class="bg-light p-3 fixed-bottom">
+    <b-container fluid class="bg-light p-3">
       <b-row>
         <b-col>
           <p>
@@ -14,7 +14,8 @@
               target="_blank"
               class="mr-2 text-secondary"
             ><icon :icon="['fab', 'twitter']" class="mr-1" />@relequestual</a>
-            Thanks to Sponsors: <a href="https://ko-fi.com/F1F3TKJK" target="_blank">
+            Thanks to Sponsors:
+            <a href="https://ko-fi.com/F1F3TKJK" target="_blank">
               <img
                 height="36"
                 style="border:0px;height:36px;"
@@ -33,5 +34,5 @@
 <script>
 export default {
   name: 'Footer',
-}
+};
 </script>

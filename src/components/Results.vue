@@ -1,20 +1,10 @@
 <template>
   <div id="results">
-    <b-row
-      v-if="ajvSchemaError.length !== 0"
-      align-h="center"
-    >
+    <b-row v-if="ajvSchemaError.length !== 0" align-h="center">
       <b-col cols="12" md="8">
-        <b-alert
-          show
-          variant="danger"
-        >
+        <b-alert show variant="danger">
           <h5>Schema Error</h5>
-          <code
-            v-for="(error, i) in ajvSchemaError"
-            :key="i"
-            class="text-left"
-          >
+          <code v-for="(error, i) in ajvSchemaError" :key="i" class="text-left">
             <pre>"{{ error.dataPath }}" {{ error.message }} </pre>
           </code>
         </b-alert>
@@ -25,10 +15,7 @@
       align-h="center"
     >
       <b-col cols="12" md="8">
-        <b-alert
-          show
-          variant="danger"
-        >
+        <b-alert show variant="danger">
           <h5>Validation Error</h5>
           <code
             v-for="error in schemaValidationErrorMessages"
@@ -40,18 +27,11 @@
         </b-alert>
       </b-col>
     </b-row>
-    <b-row
-      v-if="ajvValidationSuccess === true"
-      align-h="center"
-    >
+    <b-row v-if="ajvValidationSuccess === true" align-h="center">
       <b-col cols="12" md="8">
-        <b-alert
-          show
-          variant="success"
-        >
+        <b-alert show variant="success">
           <h5>
             <icon
-              v-if="ajvValidationSuccess === true"
               :icon="['far', 'check-circle']"
               size="2x"
               class="align-middle"
@@ -83,7 +63,7 @@ export default {
     schemaValidationErrorMessages: {
       type: Array,
       default: () => [],
-    }
-  }
-}
+    },
+  },
+};
 </script>

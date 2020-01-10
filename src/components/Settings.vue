@@ -2,16 +2,13 @@
   <b-container>
     <b-card class="mb-2" header-tag="header">
       <div slot="header">
-        <b-button
-          v-b-toggle.settings
-          class="float-right"
-          variant="light"
-        >
+        <b-button v-b-toggle.settings class="float-right" variant="light">
           X
         </b-button>
         <h4>Settings</h4>
       </div>
-      Theme: <select v-model="editorTheme" class="mb-2">
+      Theme:
+      <select v-model="editorTheme" class="mb-2">
         <option selected="">
           default
         </option>
@@ -90,15 +87,15 @@ export default {
   data: function() {
     return {
       editorTheme: 'default',
-    }
+    };
   },
   watch: {
     editorTheme: function(newVal) {
       this.$emit('update-editor-theme', newVal);
-    }
+    },
   },
-  beforeMount: function () {
+  beforeMount: function() {
     this.editorTheme = this.editorThemeGiven;
   },
-}
+};
 </script>

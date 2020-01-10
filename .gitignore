@@ -21,3 +21,4 @@ yarn-error.log*
 *.sw*
 *.sublime-workspace
 *.sublime-project
+json-schema-check.code-workspace
