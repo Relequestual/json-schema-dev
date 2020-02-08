@@ -55,6 +55,9 @@
               alt="Buy Me a Coffee at ko-fi.com"
             >
           </a>
+          <!-- Calendly link widget begin -->
+          <a class="btn btn-primary ml-2" href="" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/jsonschema/lets-talk-75'});return false;">Schedule consult</a>
+          <!-- Calendly link widget end -->
         </b-navbar-nav>
       </b-collapse>
     </b-container>
@@ -65,5 +68,15 @@
 
 export default {
   name: 'Navigation',
+  mounted: function () {
+    const script = document.createElement('script')
+    script.type = 'text/javascript';
+    script.src = '//assets.calendly.com/assets/external/widget.js';
+    this.$el.append(script);
+    // Calendly.initBadgeWidget({ url: 'https://calendly.com/jsonschema', text: 'Schedule a consult', color: '#00a2ff', textColor: '#ffffff', branding: true });
+  },
 };
 </script>
+<style lang="css">
+  @import 'https://assets.calendly.com/assets/external/widget.css';
+</style>
