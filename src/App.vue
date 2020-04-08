@@ -49,6 +49,9 @@
           <b-alert v-else-if="ajvSchemaError.length !== 0" show variant="danger">
             JSON Schema invalid. Scroll for errors.
           </b-alert>
+          <b-alert v-else-if="uncaughtError !== null" show variant="danger">
+            {{ uncaughtError }}
+          </b-alert>
           <b-alert v-else-if="ajvValidationSuccess === null" show variant="info">
             Checking validation
           </b-alert>
@@ -162,6 +165,7 @@ export default {
       instanceText: defaultInstanceText,
       ajvValidationErrors: [],
       ajvSchemaError: [],
+      uncaughtError: null,
       ajvValidationSuccess: null,
       jsonLintValid: {},
       editorTheme: 'default',
@@ -294,6 +298,7 @@ export default {
       this.ajvValidationSuccess = null;
       this.ajvSchemaError = [];
       this.ajvValidationErrors = [];
+      this.uncaughtError = null;
 
       const schema = JSON.parse(this.primarySchemaText);
       const jsonInstance = JSON.parse(this.instanceText);
@@ -329,8 +334,12 @@ export default {
     },
     validateIfPossible: _.debounce(function() {
       if (this.allJSONValid) {
-      this.$set(this, 'checkingValidation', true);
-        this.validate();
+        this.$set(this, 'checkingValidation', true);
+        this.validate().catch(error => {
+          // Catch errors that aren't directly related to validation, so we can
+          // show them to the user.
+          this.uncaughtError = error;
+        });
       }
     }, 300),
     updateJSONLintValid: function(name, valid) {
