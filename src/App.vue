@@ -49,17 +49,17 @@
           <b-alert v-else-if="ajvSchemaError.length !== 0" show variant="danger">
             JSON Schema invalid. Scroll for errors.
           </b-alert>
-          <b-alert v-else-if="uncaughtError !== null" show variant="danger">
-            {{ uncaughtError }}
-          </b-alert>
           <b-alert v-else-if="ajvValidationSuccess === null" show variant="info">
             Checking validation
           </b-alert>
           <b-alert v-if="ajvValidationSuccess === true" show variant="success">
             Instance Validation Successful
           </b-alert>
-          <b-alert v-if="ajvValidationSuccess === false" show variant="danger">
+          <b-alert v-if="ajvValidationSuccess === false && uncaughtError === null" show variant="danger">
             Instance Validation Failed. Scroll for errors.
+          </b-alert>
+          <b-alert v-else-if="ajvValidationSuccess === false && uncaughtError !== null" show variant="danger">
+            {{ uncaughtError }}
           </b-alert>
         </b-col>
       </b-row>
@@ -338,6 +338,7 @@ export default {
         this.validate().catch(error => {
           // Catch errors that aren't directly related to validation, so we can
           // show them to the user.
+          this.ajvValidationSuccess = false;
           this.uncaughtError = error;
         });
       }
