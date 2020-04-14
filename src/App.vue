@@ -55,8 +55,11 @@
           <b-alert v-if="ajvValidationSuccess === true" show variant="success">
             Instance Validation Successful
           </b-alert>
-          <b-alert v-if="ajvValidationSuccess === false" show variant="danger">
+          <b-alert v-if="ajvValidationSuccess === false && uncaughtError === null" show variant="danger">
             Instance Validation Failed. Scroll for errors.
+          </b-alert>
+          <b-alert v-else-if="ajvValidationSuccess === false && uncaughtError !== null" show variant="danger">
+            {{ uncaughtError }}
           </b-alert>
         </b-col>
       </b-row>
@@ -162,6 +165,7 @@ export default {
       instanceText: defaultInstanceText,
       ajvValidationErrors: [],
       ajvSchemaError: [],
+      uncaughtError: null,
       ajvValidationSuccess: null,
       jsonLintValid: {},
       editorTheme: 'default',
@@ -294,6 +298,7 @@ export default {
       this.ajvValidationSuccess = null;
       this.ajvSchemaError = [];
       this.ajvValidationErrors = [];
+      this.uncaughtError = null;
 
       const schema = JSON.parse(this.primarySchemaText);
       const jsonInstance = JSON.parse(this.instanceText);
@@ -329,8 +334,13 @@ export default {
     },
     validateIfPossible: _.debounce(function() {
       if (this.allJSONValid) {
-      this.$set(this, 'checkingValidation', true);
-        this.validate();
+        this.$set(this, 'checkingValidation', true);
+        this.validate().catch(error => {
+          // Catch errors that aren't directly related to validation, so we can
+          // show them to the user.
+          this.ajvValidationSuccess = false;
+          this.uncaughtError = error;
+        });
       }
     }, 300),
     updateJSONLintValid: function(name, valid) {
