@@ -2,10 +2,14 @@
   "name": "json-schema-check",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "14.18.1"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "volta-pin-to-netlify": "jq -r '.volta | to_entries | map(\"  \\(.key | ascii_upcase)_VERSION = \\\"\\(.value|tostring)\\\"\")|.[]' package.json"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
@@ -81,5 +85,9 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "volta": {
+    "node": "14.18.1",
+    "yarn": "1.22.17"
+  }
 }

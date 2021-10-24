@@ -1,6 +1,9 @@
 [build]
   publish = "dist/"
   command = "yarn run build"
+  # Should match volta inside package.json
+  NODE_VERSION = "14.18.1"
+  YARN_VERSION = "1.22.17"
 
 # The following redirect is intended for use with most SPAs that handle
 # routing internally.
