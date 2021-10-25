@@ -55,9 +55,6 @@
               alt="Buy Me a Coffee at ko-fi.com"
             >
           </a>
-          <!-- Calendly link widget begin -->
-          <a class="btn btn-primary ml-2" href="" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/jsonschema/lets-talk-75'});return false;">Schedule consult</a>
-          <!-- Calendly link widget end -->
         </b-navbar-nav>
       </b-collapse>
     </b-container>
