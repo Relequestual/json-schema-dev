@@ -1,7 +1,7 @@
 import LZ from 'lz-string';
 import Yourls from 'yourls';
 
-const yourls = new Yourls('https://l.schema.is', '714173792d')
+const yourls = new Yourls('https://l.schema.is', 'e449238fb8')
 
 const compressData = data => LZ.compressToEncodedURIComponent(JSON.stringify(data));
 
