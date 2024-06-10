@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schemas.json-schema.org/ecosystem/identification-v-0.0.1",
+  "name": "JSON Schema Dev Playground",
+  "description": "JSON Schema validation in the browser, not on a server.",
+  "toolingType": [
+    "validator",
+    "editor"
+  ],
+  "environment": [
+    "Web (Online)"
+  ],
+  "dependsOnValidators": [
+    "ajv"
+  ],
+  "creators": [
+    {
+      "name": "Ben Hutton",
+      "github": "relequestual"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Ben Hutton",
+      "github": "relequestual"
+    }
+  ],
+  "license": "MIT",
+  "projectType": "toy",
+  "repositoryStatus": "inactive",
+  "repositoryURL": "https://github.com/Relequestual/json-schema-dev",
+  "homepageURL": "https://jsonschema.dev",
+  "supportedDialects": {
+    "draft": [
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "lastUpdated": "2024-06-07"
+}
