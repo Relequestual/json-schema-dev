@@ -13,7 +13,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.8.1",
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/vue-fontawesome": "^0.1.6",
-    "ajv": "^6.9.1",
+    "ajv": "^6.12.3",
     "ajv-async": "^1.0.1",
     "bootstrap-vue": "^2.0.0-rc.12",
     "file": "^0.2.2",
