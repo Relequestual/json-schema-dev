@@ -11,4 +11,13 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxt/test-utils',
   ],
+
+  nitro: {
+    preset: 'cloudflare-module',
+    compatibilityDate: '2024-09-19',
+    cloudflare: {
+      deployConfig: true,
+      nodeCompat: true,
+    },
+  },
 });

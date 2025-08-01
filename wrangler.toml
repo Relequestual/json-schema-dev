@@ -1,0 +1,23 @@
+name = "json-schema-dev"
+# main is handled by the generated .output/server/wrangler.json
+compatibility_date = "2024-09-19"
+compatibility_flags = ["nodejs_compat", "no_nodejs_compat_v2"]
+
+[build]
+command = "pnpm run build"
+
+# Assets binding for static files
+[assets]
+binding = "ASSETS"
+directory = ".output/public"
+
+[vars]
+# Add environment variables here
+NITRO_PRESET = "cloudflare-module"
+
+# Uncomment and configure as needed:
+# [env.production]
+# vars = { ENV = "production" }
+
+# [env.staging]
+# vars = { ENV = "staging" }
