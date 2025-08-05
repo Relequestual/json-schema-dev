@@ -15,11 +15,17 @@
 
 ## Architecture Decisions
 
-### State Management Strategy
+### State Management Strategy ✅
 
-- **Application Data**: TBD - need to evaluate options (Nuxt's built-in `useState()`, Pinia, others)
-- **Workflow Logic**: XState for validation state machines
-- **Perfect fit**: JSON Schema validation workflow (parse → validate → display → share)
+**Selected**: **Pinia + XState** (August 5, 2025)
+
+**Rationale**:
+- **Pinia** for global application state management (data)
+- **XState** for workflow logic and state machines (behavior)
+- Clear separation of concerns between data and behavioral logic
+- Official Vue ecosystem integration with excellent TypeScript support
+
+**Documentation**: See `decisions/STATE_MANAGEMENT_SELECTION.md` for complete evaluation
 
 ### Validator Architecture
 
@@ -35,22 +41,21 @@
 - **Storage**: TBD - evaluate Cloudflare database options (D1, KV, R2, Durable Objects)
 - **Benefits**: Better UX, analytics, permalink stability, shorter URLs
 
-### UI Framework Options
+### UI Framework ✅
 
-**Candidates to evaluate**:
+**Selected**: **Nuxt UI** (August 5, 2025)
 
-1. **Headless UI + Tailwind** - Maximum flexibility, great DX
-2. **Nuxt UI** - Official Nuxt component library (built on Headless UI)
-3. **PrimeVue** - Rich component set, good TypeScript support
-4. **Radix Vue** - Unstyled, accessible components with Vue composition
-5. **Quasar** - Full ecosystem (might be overkill)
+**Rationale**:
 
-**Selection criteria**:
+- Official Nuxt ecosystem integration (zero configuration)
+- Modern Tailwind CSS v4 support for future-proofing
+- Optimal bundle balance with Monaco Editor
+- Excellent TypeScript support and auto-completion
+- Growing community with official backing
 
-- TypeScript support
-- Cloudflare Workers compatibility
-- JSON editor component availability
-- Bundle size impact
+**JSON Editor**: Monaco Editor (VS Code editor with excellent TypeScript support)
+
+**Documentation**: See `decisions/UI_FRAMEWORK_SELECTION.md` for complete evaluation
 
 ## Core Features (from legacy app)
 
@@ -121,10 +126,9 @@ pnpm deploy:preview # Local Wrangler preview
 
 ## Next Steps
 
-- [ ] UI framework evaluation and selection
-- [ ] **Review plan and copilot instructions**
-- [ ] State management approach research and decision
-- [ ] **Review plan and copilot instructions**
+- [x] UI framework evaluation and selection ✅ **Nuxt UI selected**
+- [x] State management approach research and decision ✅ **Pinia + XState selected**
+- [ ] **Review plan and copilot instructions** 📍 **CURRENT CHECKPOINT**
 - [ ] Project structure design
 - [ ] **Review plan and copilot instructions**
 - [ ] Core component identification

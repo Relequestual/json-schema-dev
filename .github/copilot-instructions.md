@@ -1,6 +1,23 @@
 # JSON Schema Playground - AI Agent Instructions
 
-## Project Context
+## Project### Implementation Strategy
+
+### Installation Best Practices
+
+- **Always check official documentation** - Don't assume installation commands, verify from official sources
+- **Nuxt modules**: Use `pnpm add @nuxt/<module>` then add to `nuxt.config.ts` modules array
+- **Regular packages**: Use `pnpm add <package>` for dependencies
+- **CLI tools**: Use `pnpm dlx <command>` for one-time executions
+- **Avoid npm/npx**: Never use npm or npx commands in this project
+
+### Development Workflow Guidelines
+
+- **Check PLANNING.md first** - Always review current project status and next steps before writing code
+- **Follow the defined phases** - Don't jump ahead to later phases without completing current tasks
+- **Update planning documents** - Mark tasks complete and update status as work progresses
+- **Respect review checkpoints** - Pause for plan review between major milestones
+
+### Phased Development Approachntext
 
 This is **jsonschema.dev** - a browser-based JSON Schema validation playground. Currently undergoing migration from Vue 2 + Vue CLI (in `previous/`) to **Nuxt 4** + Cloudflare Workers architecture.
 
@@ -25,7 +42,8 @@ pnpm deploy:preview # Local Wrangler preview
 ### Configuration Standards
 
 - **Node.js**: Pinned to 22.12.0 LTS via `.nvmrc` (Volta compatible)
-- **Package Manager**: pnpm 9.15.3+ (specified in package.json)
+- **Package Manager**: pnpm 9.15.3+ (specified in package.json) - **ALWAYS use pnpm commands, never npm/npx**
+- **Package Installation**: Use `pnpm add <package>` for dependencies, `pnpm dlx` for one-time CLI tools
 - **Compatibility Dates**: Always set to current date (follow Cloudflare best practice)
 - **ESLint**: Uses flat config (`eslint.useFlatConfig: true`)
 
@@ -53,7 +71,7 @@ pnpm deploy:preview # Local Wrangler preview
 ## Planning Context
 
 - **Validator Strategy**: Start with latest AJV for rapid development, design pluggable interface for eventual WASM validators
-- **UI Framework**: TBD - considering Headless UI + Tailwind, Nuxt UI, PrimeVue, Radix Vue, or Quasar
+- **UI Framework**: ✅ **Nuxt UI** - Official Nuxt component library with Tailwind CSS v4, Monaco Editor for JSON editing
 - **State Management**: TBD - need to evaluate options (Nuxt's built-in `useState()`, Pinia, others); XState for validation workflow state machines
 - **Architecture**: XState perfect for JSON Schema validation workflow (parse → validate → display → share)
 
@@ -96,8 +114,8 @@ pnpm deploy:preview # Local Wrangler preview
 ## Open Decisions (TBD)
 
 1. **State management** - Evaluate Nuxt's `useState()`, Pinia, others
-2. **UI Framework** - Headless UI+Tailwind, Nuxt UI, PrimeVue, Radix Vue, Quasar
-3. **Editor component** - CodeMirror vs Monaco vs custom
+2. ~~**UI Framework**~~ - ✅ **Nuxt UI selected** (Tailwind CSS v4, Monaco Editor)
+3. ~~**Editor component**~~ - ✅ **Monaco Editor selected** (VS Code functionality)
 4. **Cloudflare database** - D1, KV, R2, or Durable Objects for schema sharing
 5. **Theme support** - Light/dark mode implementation
 6. **Compression strategy** - LZ-string compatibility vs alternatives

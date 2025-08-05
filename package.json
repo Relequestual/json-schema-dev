@@ -18,11 +18,16 @@
     "@nuxt/image": "1.11.0",
     "@nuxt/scripts": "0.11.10",
     "@nuxt/test-utils": "3.19.2",
+    "@nuxt/ui": "^3.3.0",
+    "@pinia/nuxt": "0.11.2",
     "@unhead/vue": "^2.0.3",
+    "@xstate/vue": "^5.0.0",
     "eslint": "^9.0.0",
     "nuxt": "^4.0.1",
+    "pinia": "^3.0.3",
     "vue": "^3.5.18",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "xstate": "^5.20.1"
   },
   "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a",
   "devDependencies": {
