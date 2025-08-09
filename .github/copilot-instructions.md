@@ -6,6 +6,13 @@ This is **jsonschema.dev** - a browser-based JSON Schema validation playground. 
 
 **CRITICAL**: Phase 1 foundation is **COMPLETE** as of August 9, 2025. Routing, base components, and styling are working. Ready for Phase 2 development.
 
+## Absolute Requirements for Ways of Working
+
+- **Always check official documentation** - Don't assume installation commands, verify from official sources
+- **When uncertain, say so** - If you don't know something, say "I'm not sure" and suggest relevant docs to check
+- **Never make assumptions** - It's FAR better to admit uncertainty than to present incorrect information as fact
+- **Prefer documentation over assumptions** - Always suggest checking official sources rather than guessing
+
 ## User Preferences & Patterns
 
 ### Development Approach
@@ -61,7 +68,6 @@ pnpm deploy:preview # Local Wrangler preview
 
 ### Installation Best Practices
 
-- **Always check official documentation** - Don't assume installation commands, verify from official sources
 - **Nuxt modules**: Use `pnpm add @nuxt/<module>` then add to `nuxt.config.ts` modules array
 - **Regular packages**: Use `pnpm add <package>` for dependencies
 - **CLI tools**: Use `pnpm dlx <command>` for one-time executions
