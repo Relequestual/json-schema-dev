@@ -19,5 +19,24 @@
     "titleBar.inactiveForeground": "#15202b99"
   },
   "peacock.color": "#42b883",
-  "eslint.useFlatConfig": true
+  "eslint.useFlatConfig": true,
+  // Prettier configuration - use project settings, not VS Code extension settings
+  "prettier.requireConfig": true,
+  "prettier.useEditorConfig": false,
+  // Format on save
+  "editor.formatOnSave": true,
+  // Use Prettier as the default formatter for these file types
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

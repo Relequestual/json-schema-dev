@@ -1,5 +1,9 @@
-trailingComma: "es5"
-tabWidth: 2
-singleQuote: true
-requirePragma: false
-bracketSpacing: true
+{
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "singleQuote": true,
+  "requirePragma": false,
+  "bracketSpacing": true,
+  "printWidth": 100,
+  "singleAttributePerLine": false
+}
