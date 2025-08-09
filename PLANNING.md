@@ -129,10 +129,10 @@ pnpm deploy:preview # Local Wrangler preview
 
 - [x] UI framework evaluation and selection ✅ **Nuxt UI selected**
 - [x] State management approach research and decision ✅ **Pinia + XState selected**
-- [x] **Review plan and copilot instructions** 📍 **CURRENT CHECKPOINT**
-- [ ] Project structure design
-- [ ] **Review plan and copilot instructions**
-- [ ] Core component identification
+- [x] **Review plan and copilot instructions**
+- [x] Project structure design ✅ **Complete** - See `decisions/PROJECT_STRUCTURE.md`
+- [x] **Review plan and copilot instructions**
+- [ ] Core component identification 📍 **CURRENT CHECKPOINT**
 - [ ] **Review plan and copilot instructions**
 - [ ] State machine workflow design
 - [ ] **Review plan and copilot instructions**
