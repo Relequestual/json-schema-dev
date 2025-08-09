@@ -20,6 +20,7 @@
 **Selected**: **Pinia + XState** (August 5, 2025)
 
 **Rationale**:
+
 - **Pinia** for global application state management (data)
 - **XState** for workflow logic and state machines (behavior)
 - Clear separation of concerns between data and behavioral logic
@@ -128,7 +129,7 @@ pnpm deploy:preview # Local Wrangler preview
 
 - [x] UI framework evaluation and selection ✅ **Nuxt UI selected**
 - [x] State management approach research and decision ✅ **Pinia + XState selected**
-- [ ] **Review plan and copilot instructions** 📍 **CURRENT CHECKPOINT**
+- [x] **Review plan and copilot instructions** 📍 **CURRENT CHECKPOINT**
 - [ ] Project structure design
 - [ ] **Review plan and copilot instructions**
 - [ ] Core component identification
