@@ -48,7 +48,7 @@
 - Clear separation of concerns between data and behavioral logic
 - Official Vue ecosystem integration with excellent TypeScript support
 
-**Documentation**: See `decisions/STATE_MANAGEMENT_SELECTION.md` and `decisions/VALIDATION_MACHINE_DESIGN.md`
+**Documentation**: See `project-management/decisions/STATE_MANAGEMENT_SELECTION.md` and `project-management/decisions/VALIDATION_MACHINE_DESIGN.md`
 
 ### Validator Architecture ✅
 
@@ -81,7 +81,7 @@
 
 **JSON Editor**: Monaco Editor (VS Code editor) - Pending Implementation
 
-**Documentation**: See `decisions/UI_FRAMEWORK_SELECTION.md` for complete evaluation
+**Documentation**: See `project-management/decisions/UI_FRAMEWORK_SELECTION.md` for complete evaluation
 
 ## Development Phases
 

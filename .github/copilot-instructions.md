@@ -100,7 +100,7 @@ PLANNING.md contains detailed implementation status tracking, technical specific
 - **UI Framework**: ✅ **Nuxt UI** - Official Nuxt component library with Tailwind CSS v4, Monaco Editor for JSON editing
 - **State Management**: ✅ **Pinia + XState selected** - Pinia for data, XState for workflow logic
 - **Architecture**: XState perfect for JSON Schema validation workflow (parse → validate → display → share)
-- **Project Structure**: See `decisions/PROJECT_STRUCTURE.md` for full implementation
+- **Project Structure**: See `project-management/decisions/PROJECT_STRUCTURE.md` for full implementation
 
 ## 🔄 Implementation Strategy
 
