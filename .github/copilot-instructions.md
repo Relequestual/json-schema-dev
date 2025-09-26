@@ -8,7 +8,7 @@
 **Phase 1 Achievements**: Routing, base components, styling, state management
 **Phase 2 Focus**: Monaco editor integration, validation UI connection
 
-## 🚨 CRITICAL: Always Check PLANNING.md First
+## 🚨 CRITICAL: Always Check PLANNING.md and current-tasks.md First
 
 **PLANNING.md is the source of truth for all project work. Check it when:**
 
@@ -17,6 +17,8 @@
 - **Implementing architecture-level changes**
 - **Questions arise about project status or priorities**
 - **Making decisions that impact multiple components**
+
+**current-tasks.md** tracks the latest actionable items. **Always check current-tasks.md before starting new work or clarifying priorities.**
 
 PLANNING.md contains detailed implementation status tracking, technical specifications, and phase-specific requirements. Not every minor change requires consulting it.
 
