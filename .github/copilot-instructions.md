@@ -1,33 +1,47 @@
 # JSON Schema Playground - AI Agent Instructions
 
-## Project Context
+## 📋 Project Context
 
-This is **jsonschema.dev** - a browser-based JSON Schema validation playground. Currently undergoing migration from Vue 2 + Vue CLI (in `previous/`) to **Nuxt 4** + Cloudflare Workers architecture.
+**Project**: jsonschema.dev - Browser-based JSON Schema validation playground
+**Status**: Migration from Vue 2 + Vue CLI (`previous/`) → Nuxt 4 + Cloudflare Workers
+**Current Phase**: Phase 1 COMPLETE (Aug 9, 2025) → Phase 2 in progress
+**Phase 1 Achievements**: Routing, base components, styling, state management
+**Phase 2 Focus**: Monaco editor integration, validation UI connection
 
-**CRITICAL**: Phase 1 foundation is **COMPLETE** as of August 9, 2025. Routing, base components, and styling are working. Ready for Phase 2 development.
+## 🚨 CRITICAL: Always Check PLANNING.md First
 
-## Absolute Requirements for Ways of Working
+**PLANNING.md is the source of truth for all project work. Check it when:**
+
+- **Starting work on a new feature or component**
+- **Moving between project phases**
+- **Implementing architecture-level changes**
+- **Questions arise about project status or priorities**
+- **Making decisions that impact multiple components**
+
+PLANNING.md contains detailed implementation status tracking, technical specifications, and phase-specific requirements. Not every minor change requires consulting it.
+
+## ⚠️ Absolute Requirements for Ways of Working
 
 - **Always check official documentation** - Don't assume installation commands, verify from official sources
 - **When uncertain, say so** - If you don't know something, say "I'm not sure" and suggest relevant docs to check
 - **Never make assumptions** - It's FAR better to admit uncertainty than to present incorrect information as fact
 - **Prefer documentation over assumptions** - Always suggest checking official sources rather than guessing
+- **Preserve critical planning information** - When updating documentation, NEVER remove existing sections without explicit confirmation. Instead, enhance sections with status updates, add new sections, or ask before removing anything that tracks features, requirements, or user-facing functionality
 
-## User Preferences & Patterns
+## 👤 User Preferences & Patterns
 
-### Development Approach
+### Development Workflow Guidelines
 
 - **Documentation-first**: Create/update architectural documentation before major implementations
 - **Checkpoint-driven**: Explicit plan reviews between phases, mark tasks complete as progress
 - **TypeScript-first**: Prefer strong typing and composition API patterns throughout
 - **Compatibility-focused**: Preserve existing shared URLs during migration (critical user requirement)
 
-### Development Workflow Guidelines
+### Documentation Preservation Principle
 
-- **Check PLANNING.md first** - Always review current project status and next steps before writing code
-- **Follow the defined phases** - Don't jump ahead to later phases without completing current tasks
-- **Update planning documents** - Mark tasks complete and update status as work progresses
-- **Respect review checkpoints** - Pause for plan review between major milestones
+- **ENHANCE existing feature tracking with minimal implementation details**
+- **ASK before removing any section that tracks user features, requirements, or legacy app parity**
+- **Remember: "Core Features" tracks what users expect, "Implementation Status" tracks what code exists**
 
 ### Implementation Patterns Discovered
 
@@ -42,53 +56,45 @@ This is **jsonschema.dev** - a browser-based JSON Schema validation playground. 
 - **Legacy reference**: `previous/` contains working Vue 2 app for feature reference, but build from scratch
 - **Validation focus**: Core feature is JSON Schema validation with pluggable validator architecture planned
 
-## Architecture Overview
+## 🏗️ Architecture Overview
 
 - **Current**: Nuxt 4 app with Cloudflare Workers deployment preset
 - **Legacy**: Vue 2 + Bootstrap Vue + Vue CLI app (preserved in `previous/`)
 - **Core Purpose**: Client-side JSON Schema validation with pluggable validator support (WASM, etc.)
 - **Deployment**: Cloudflare Workers (modern approach, not Pages)
 
-## Key Project Patterns
+## 🧩 Key Project Patterns
 
-### Development Workflow
+## Utility Libraries
 
-```bash
-pnpm dev          # Development server (full-stack: static + API routes)
-pnpm build        # Build for Cloudflare Workers
-pnpm deploy       # Build + deploy to Cloudflare
-pnpm deploy:preview # Local Wrangler preview
-```
+- **@vueuse/core** is installed and available. It provides many useful Vue/Nuxt composable utilities (e.g., `useDebounceFn`, `useThrottleFn`, etc.).
+- **Treeshaking is supported**: Only imported utilities are included in the bundle, so prefer direct imports for optimal bundle size.
+- **Guideline**: When writing or refactoring Vue/Nuxt code, always check if a VueUse composable can simplify or reduce code. Prefer VueUse utilities over custom implementations for common patterns (debounce, throttle, clipboard, etc.).
 
-### Configuration Standards
+### Technical Stack Configuration
 
-- **Node.js**: Pinned to 22.12.0 LTS via `.nvmrc` (Volta compatible)
-- **Package Manager**: pnpm 9.15.3+ (specified in package.json) - **ALWAYS use pnpm commands, never npm/npx**
-- **ESLint**: Uses flat config (`eslint.useFlatConfig: true`)
+| Component           | Specification                   | Command/Config                       |
+| ------------------- | ------------------------------- | ------------------------------------ |
+| **Node.js**         | 22.12.0 LTS (`.nvmrc`)          | Volta compatible                     |
+| **Package Manager** | pnpm 9.15.3+                    | **ALWAYS use `pnpm`, never npm/npx** |
+| **ESLint**          | Flat config                     | `eslint.useFlatConfig: true`         |
+| **Structure**       | Nuxt 4 `app/` directory         | Not `pages/` or `src/`               |
+| **Build Target**    | Cloudflare Workers              | `nitro.preset: 'cloudflare-module'`  |
+| **Runtime**         | Modern Workers                  | Not legacy Pages                     |
+| **Routing**         | SPA via `app/router.options.ts` | `/` and `/s/:data` → same component  |
 
-### Installation Best Practices
+### Installation Commands Reference
 
-- **Nuxt modules**: Use `pnpm add @nuxt/<module>` then add to `nuxt.config.ts` modules array
-- **Regular packages**: Use `pnpm add <package>` for dependencies
-- **CLI tools**: Use `pnpm dlx <command>` for one-time executions
-- **Compatibility Dates**: Always set to current date (follow Cloudflare best practice)
+| Task             | Command                   | Notes                                 |
+| ---------------- | ------------------------- | ------------------------------------- |
+| **Nuxt modules** | `pnpm add @nuxt/<module>` | Add to `nuxt.config.ts` modules array |
+| **Dependencies** | `pnpm add <package>`      | Regular packages                      |
+| **CLI tools**    | `pnpm dlx <command>`      | One-time executions                   |
+| **Dev server**   | `pnpm dev`                | Full-stack: static + API routes       |
+| **Build**        | `pnpm build`              | For Cloudflare Workers                |
+| **Deploy**       | `pnpm deploy`             | Build + deploy to Cloudflare          |
 
-### Nuxt 4 Specifics
-
-- **Structure**: Uses `app/` directory (not `pages/` or `src/`)
-- **Modules**: @nuxt/eslint, @nuxt/fonts, @nuxt/icon, @nuxt/image, @nuxt/scripts
-- **Build Target**: `nitro.preset: 'cloudflare-module'` with Node.js compatibility
-- **TypeScript**: Built-in, no separate configuration needed
-- **Routing**: SPA-style routing via `app/router.options.ts` (both `/` and `/s/:data` → same component)
-
-### Cloudflare Workers Setup
-
-- **Runtime**: Modern Workers (not legacy Pages)
-- **Config**: `wrangler.toml` + auto-generated `.output/server/wrangler.json`
-- **Assets**: Static files served via ASSETS binding
-- **Compatibility**: Node.js compatibility enabled (`nodeCompat: true`)
-
-## Planning Context
+## 📝 Planning Context
 
 - **Validator Strategy**: Start with latest AJV for rapid development, design pluggable interface for eventual WASM validators
 - **UI Framework**: ✅ **Nuxt UI** - Official Nuxt component library with Tailwind CSS v4, Monaco Editor for JSON editing
@@ -96,29 +102,19 @@ pnpm deploy:preview # Local Wrangler preview
 - **Architecture**: XState perfect for JSON Schema validation workflow (parse → validate → display → share)
 - **Project Structure**: See `decisions/PROJECT_STRUCTURE.md` for full implementation
 
-## Implementation Strategy
+## 🔄 Implementation Strategy
 
-### Phased Development Approach
+**Phased Development Approach**: This project follows a carefully structured phased development approach. See PLANNING.md for detailed implementation status tracking and specific tasks within each phase.
 
-- **Phase 1**: ✅ Frontend foundation with routing, components, styling
-- **Phase 2**: Monaco editors + AJV validation system
-- **Phase 3**: Cloudflare Workers API for schema sharing
-- **Phase 4**: Hybrid loading (both systems) + save only to Cloudflare
-- **Phase 5**: Migrate existing URL shortener data to Cloudflare storage
+**Backend Service Planning**: The project is migrating from client-side URL encoding to a Cloudflare Workers API solution. See PLANNING.md for detailed backend architecture decisions.
 
-### Backend Service Planning
-
-- **Current**: Client-side URL encoding + third-party URL shortener
-- **Future**: Cloudflare Workers API + database (D1, KV, R2, or Durable Objects TBD)
-- **Migration**: Seamless transition preserving all existing shared URLs
-
-### Decision Process
+**Decision Process**:
 
 - **Review checkpoints**: Plan and instructions reviewed between each major step
 - **Iterative refinement**: Continuous improvement based on learnings
 - **Documentation**: Capture patterns and decisions for future reference
 
-## Open Decisions (TBD)
+## ❓ Open Decisions (TBD)
 
 1. **Cloudflare database** - D1, KV, R2, or Durable Objects for schema sharing
 2. **Theme support** - Light/dark mode implementation
@@ -126,4 +122,4 @@ pnpm deploy:preview # Local Wrangler preview
 
 ## Context Reminder
 
-Always check `PLANNING.md` for current project status and detailed context before making architectural suggestions.
+Check `PLANNING.md` for current project status and detailed context when making architectural suggestions or beginning significant new work. For routine code changes or isolated fixes, referencing this instruction document may be sufficient.
