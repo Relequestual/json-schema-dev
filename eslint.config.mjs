@@ -4,5 +4,9 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default withNuxt(
   // Disable rules that conflict with Prettier
-  eslintConfigPrettier
+  eslintConfigPrettier,
+  {
+    // Ignore legacy Vue 2 code
+    ignores: ['previous/**/*'],
+  }
 );

@@ -9,7 +9,14 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "deploy": "nuxt build && wrangler deploy",
-    "deploy:preview": "wrangler dev"
+    "deploy:preview": "wrangler dev",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "pnpm run lint && pnpm run format:check && pnpm run typecheck",
+    "check:fix": "pnpm run lint:fix && pnpm run format && pnpm run typecheck",
+    "typecheck": "nuxt typecheck"
   },
   "dependencies": {
     "@nuxt/eslint": "1.7.1",
@@ -21,7 +28,9 @@
     "@nuxt/ui": "^3.3.0",
     "@pinia/nuxt": "0.11.2",
     "@unhead/vue": "^2.0.3",
+    "@vueuse/core": "^13.8.0",
     "@xstate/vue": "^5.0.0",
+    "ajv": "^8.17.1",
     "eslint": "^9.0.0",
     "nuxt": "^4.0.1",
     "pinia": "^3.0.3",
@@ -31,6 +40,7 @@
   },
   "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a",
   "devDependencies": {
+    "@vueuse/nuxt": "^13.8.0",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "3.6.2",
     "typescript": "^5.9.2",
