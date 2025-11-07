@@ -118,23 +118,39 @@ const validation = useValidation();
 // Import Pinia store
 const playgroundStore = usePlaygroundStore();
 
-// Separate debounced functions for schema and instance updates
+// Debounced validation with proper cancellation
+// Track the latest values to ensure we only process the most recent
+let latestSchemaValue = '';
+let latestInstanceValue = '';
+
 const debouncedSchemaUpdate = useDebounceFn((schemaText: string) => {
-  validation.updateSchema(schemaText);
+  // Only proceed if this is still the latest value
+  if (schemaText === latestSchemaValue) {
+    validation.updateSchema(schemaText);
+  }
 }, 300);
 
 const debouncedInstanceUpdate = useDebounceFn((instanceText: string) => {
-  validation.updateInstance(instanceText);
+  // Only proceed if this is still the latest value
+  if (instanceText === latestInstanceValue) {
+    validation.updateInstance(instanceText);
+  }
 }, 300);
 
-// Watch for changes in schema/instance and trigger validation
+// Watch for changes and trigger debounced validation
 watch(
   () => playgroundStore.schema,
-  (newValue) => debouncedSchemaUpdate(newValue)
+  (newValue) => {
+    latestSchemaValue = newValue; // Track latest value
+    debouncedSchemaUpdate(newValue);
+  }
 );
 watch(
   () => playgroundStore.instance,
-  (newValue) => debouncedInstanceUpdate(newValue)
+  (newValue) => {
+    latestInstanceValue = newValue; // Track latest value
+    debouncedInstanceUpdate(newValue);
+  }
 );
 
 // Initialize validation on mount

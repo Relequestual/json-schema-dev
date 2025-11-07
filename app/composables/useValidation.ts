@@ -1,10 +1,6 @@
 import { useMachine } from '@xstate/vue';
 import { fromPromise } from 'xstate';
-import {
-  validationMachine,
-  type ValidationContext,
-  type ValidationEvent,
-} from '~/machines/validationMachine';
+import { validationMachine, type ValidationEvent } from '~/machines/validationMachine';
 import Ajv, { type ErrorObject } from 'ajv';
 
 /**
@@ -12,6 +8,8 @@ import Ajv, { type ErrorObject } from 'ajv';
  * Based on the logic from the previous Vue 2 implementation.
  */
 export const useValidation = () => {
+  // Get store inside composable function (after Pinia is initialized)
+  const playgroundStore = usePlaygroundStore();
   // Create AJV instance with settings matching previous implementation
   const ajv = new Ajv({
     allErrors: true,
@@ -27,9 +25,6 @@ export const useValidation = () => {
         parseJSON: fromPromise(async ({ input }: { input: string }): Promise<any> => {
           console.log('actor parsing json');
           console.log({ input });
-          if (!input || input.trim() === '') {
-            throw new Error('Empty JSON text');
-          }
 
           try {
             return JSON.parse(input);
@@ -123,7 +118,7 @@ export const useValidation = () => {
 
   // Computed getters for easier access to state properties
   const currentState = computed(() => snapshot.value.value);
-  const context = computed(() => snapshot.value.context as ValidationContext);
+  const context = computed(() => snapshot.value.context); // Empty context - data in store
 
   // Validation status computed properties - matches previous implementation
   const isValidating = computed(() => {
@@ -137,12 +132,12 @@ export const useValidation = () => {
   });
 
   const hasErrors = computed(() => {
-    const ctx = context.value;
     return !!(
-      ctx.schemaParseError ||
-      ctx.instanceParseError ||
-      ctx.schemaValidationErrors ||
-      (ctx.instanceValidationErrors && ctx.instanceValidationErrors.length > 0)
+      playgroundStore.schemaParseError ||
+      playgroundStore.instanceParseError ||
+      playgroundStore.schemaValidationErrors ||
+      (playgroundStore.instanceValidationErrors &&
+        playgroundStore.instanceValidationErrors.length > 0)
     );
   });
 
@@ -151,27 +146,19 @@ export const useValidation = () => {
     return currentState.value === 'validationResults';
   });
 
-  const validationSuccess = computed(() => {
-    return isValidationComplete.value && context.value.isValid === true;
-  });
-
-  const validationFailed = computed(() => {
-    return isValidationComplete.value && context.value.isValid === false;
-  });
-
   // Error message formatters - matches previous implementation
   const formatSchemaError = (error: ErrorObject): string => {
     return `${error.message}.\n${error.keyword} at "${error.schemaPath}"\nInstance location: "${error.instancePath}"`;
   };
 
   const schemaValidationErrorMessages = computed(() => {
-    const errors = context.value.schemaValidationErrors;
-    return errors ? errors.map((error) => formatSchemaError(error)) : [];
+    const errors = playgroundStore.schemaValidationErrors;
+    return errors ? errors.map((error: ErrorObject) => formatSchemaError(error)) : [];
   });
 
   const instanceValidationErrorMessages = computed(() => {
-    const errors = context.value.instanceValidationErrors;
-    return errors ? errors.map((error) => formatSchemaError(error)) : [];
+    const errors = playgroundStore.instanceValidationErrors;
+    return errors ? errors.map((error: ErrorObject) => formatSchemaError(error)) : [];
   });
 
   // Actions to send events to the machine
@@ -199,8 +186,6 @@ export const useValidation = () => {
     isValidating,
     hasErrors,
     isValidationComplete,
-    validationSuccess,
-    validationFailed,
 
     // Error messages
     schemaValidationErrorMessages,

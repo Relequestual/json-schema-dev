@@ -2,18 +2,18 @@
   <div class="space-y-4">
     <!-- Schema Parse Errors -->
     <UAlert
-      v-if="validation.context.value.schemaParseError"
+      v-if="playgroundStore.schemaParseError"
       title="Schema Parse Error"
-      :description="validation.context.value.schemaParseError"
+      :description="playgroundStore.schemaParseError"
       color="error"
       icon="i-heroicons-exclamation-triangle"
     />
 
     <!-- Instance Parse Errors -->
     <UAlert
-      v-if="validation.context.value.instanceParseError"
+      v-if="playgroundStore.instanceParseError"
       title="Instance Parse Error"
-      :description="validation.context.value.instanceParseError"
+      :description="playgroundStore.instanceParseError"
       color="error"
       icon="i-heroicons-exclamation-triangle"
     />
@@ -21,8 +21,7 @@
     <!-- Schema Validation Errors -->
     <UAlert
       v-if="
-        validation.context.value.schemaValidationErrors &&
-        validation.context.value.schemaValidationErrors.length > 0
+        playgroundStore.schemaValidationErrors && playgroundStore.schemaValidationErrors.length > 0
       "
       title="Schema Validation Error"
       color="error"
@@ -31,7 +30,7 @@
       <template #description>
         <div class="space-y-2">
           <div
-            v-for="(error, i) in validation.context.value.schemaValidationErrors"
+            v-for="(error, i) in playgroundStore.schemaValidationErrors"
             :key="i"
             class="font-mono text-sm bg-error-50 dark:bg-error-950/50 p-2 rounded border-l-4 border-error-500"
           >
@@ -44,8 +43,8 @@
     <!-- Instance Validation Errors -->
     <UAlert
       v-if="
-        validation.context.value.instanceValidationErrors &&
-        validation.context.value.instanceValidationErrors.length > 0
+        playgroundStore.instanceValidationErrors &&
+        playgroundStore.instanceValidationErrors.length > 0
       "
       title="Instance Validation Error"
       color="error"
@@ -54,7 +53,7 @@
       <template #description>
         <div class="space-y-2">
           <div
-            v-for="(error, i) in validation.context.value.instanceValidationErrors"
+            v-for="(error, i) in playgroundStore.instanceValidationErrors"
             :key="i"
             class="font-mono text-sm bg-error-50 dark:bg-error-950/50 p-2 rounded border-l-4 border-error-500"
           >
@@ -66,17 +65,17 @@
 
     <!-- Validation Success -->
     <UAlert
-      v-if="validation.validationSuccess.value"
+      v-if="playgroundStore.isValid === true"
       title="Validation Successful"
       description="The JSON instance is valid according to the provided schema."
       color="primary"
       icon="i-heroicons-check-circle"
     />
 
-    <!-- Ready to Validate (no errors, no results yet) -->
+    <!-- Ready (no errors, no results yet) -->
     <UAlert
-      v-if="showReadyState"
-      title="Ready to validate"
+      v-if="playgroundStore.showReadyState"
+      title="Ready"
       description="Enter your JSON Schema and instance data above to begin validation."
       color="info"
       variant="soft"
@@ -88,23 +87,8 @@
 <script setup lang="ts">
 import type { ErrorObject } from 'ajv';
 
-// Use the global validation composable directly
-const validation = useValidation();
-
-// Computed to determine if we should show the "ready to validate" state
-const showReadyState = computed(() => {
-  return (
-    !validation.isValidating.value &&
-    !validation.hasErrors.value &&
-    !validation.isValidationComplete.value &&
-    !validation.context.value.schemaParseError &&
-    !validation.context.value.instanceParseError &&
-    (!validation.context.value.schemaValidationErrors ||
-      validation.context.value.schemaValidationErrors.length === 0) &&
-    (!validation.context.value.instanceValidationErrors ||
-      validation.context.value.instanceValidationErrors.length === 0)
-  );
-});
+// Use the Pinia store for validation state
+const playgroundStore = usePlaygroundStore();
 
 // Error formatting functions (based on the previous implementation)
 const formatSchemaError = (error: ErrorObject): string => {
