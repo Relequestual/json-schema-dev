@@ -14,27 +14,25 @@
     </div>
 
     <!-- Error state for shared URLs -->
-    <div v-else-if="sharedUrlError" class="flex-1 flex items-center justify-center">
-      <UContainer>
-        <UCard class="max-w-md mx-auto">
-          <UAlert title="Invalid Share URL" :description="sharedUrlError" color="error" />
-          <div class="mt-4">
-            <UButton
-              variant="outline"
-              @click="
-                sharedUrlError = null;
-                $router.push('/');
-              "
-            >
-              Continue to Playground
-            </UButton>
-          </div>
-        </UCard>
-      </UContainer>
+    <div v-else-if="sharedUrlError" class="flex-1 flex items-center justify-center px-4">
+      <UCard class="max-w-md mx-auto">
+        <UAlert title="Invalid Share URL" :description="sharedUrlError" color="error" />
+        <div class="mt-4">
+          <UButton
+            variant="outline"
+            @click="
+              sharedUrlError = null;
+              $router.push('/');
+            "
+          >
+            Continue to Playground
+          </UButton>
+        </div>
+      </UCard>
     </div>
 
     <!-- Main playground interface -->
-    <UContainer v-else class="flex-1 py-8">
+    <UContainer v-else class="flex-1 py-8 max-w-none">
       <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-highlighted mb-2">JSON Schema Playground</h1>
         <p class="text-muted">
@@ -46,7 +44,7 @@
       </div>
 
       <!-- Main editor and validation interface -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 mb-8">
         <!-- Schema Editor -->
         <UCard>
           <template #header>
@@ -56,12 +54,12 @@
             </div>
           </template>
 
-          <div class="w-full h-96">
-            <UTextarea
+          <div class="w-full h-96 border border-gray-200 rounded-md overflow-hidden">
+            <MonacoEditor
               v-model="playgroundStore.schema"
-              placeholder="Enter your JSON Schema here..."
-              class="w-full h-full font-mono text-sm"
-              :ui="{ base: 'w-full h-full resize-none' }"
+              lang="json"
+              :options="{ ...editorOptions, placeholder: 'Enter your JSON Schema here...' }"
+              :style="{ width: '100%', height: '100%' }"
             />
           </div>
         </UCard>
@@ -75,12 +73,15 @@
             </div>
           </template>
 
-          <div class="w-full h-96">
-            <UTextarea
+          <div class="w-full h-96 border border-gray-200 rounded-md overflow-hidden">
+            <MonacoEditor
               v-model="playgroundStore.instance"
-              placeholder="Enter your JSON instance here..."
-              class="w-full h-full font-mono text-sm"
-              :ui="{ base: 'w-full h-full resize-none' }"
+              lang="json"
+              :options="{
+                ...editorOptions,
+                placeholder: 'Enter your JSON instance to validate...',
+              }"
+              :style="{ width: '100%', height: '100%' }"
             />
           </div>
         </UCard>
@@ -104,6 +105,7 @@
 
 <script setup lang="ts">
 import { useDebounceFn } from '@vueuse/core';
+import { useMonacoConfig } from '@/composables/useMonacoConfig';
 
 // Import layout components
 import AppHeader from '~/components/layout/AppHeader.vue';
@@ -117,6 +119,34 @@ const validation = useValidation();
 
 // Import Pinia store
 const playgroundStore = usePlaygroundStore();
+
+// Import Monaco configuration composable
+const { configureSchemaEditor, configureInstanceEditor, getEditorOptions } = useMonacoConfig();
+
+// Get color mode for theme
+const colorMode = useColorMode();
+
+// Configure Monaco editors on mount
+onMounted(async () => {
+  await configureSchemaEditor();
+  await configureInstanceEditor();
+});
+
+// Get editor options from composable and make theme reactive
+const editorOptions = computed(() => {
+  const isDarkMode = colorMode.value === 'dark';
+  const baseEditorOptions = getEditorOptions(isDarkMode);
+
+  return {
+    ...baseEditorOptions,
+    // Disable built-in JSON Schema autocomplete
+    quickSuggestions: false,
+    suggestOnTriggerCharacters: false,
+    acceptSuggestionOnEnter: 'off' as const,
+    // Keep syntax error highlighting but disable occurrence highlighting
+    occurrencesHighlight: 'off' as const,
+  };
+});
 
 // Debounced validation with proper cancellation
 // Track the latest values to ensure we only process the most recent

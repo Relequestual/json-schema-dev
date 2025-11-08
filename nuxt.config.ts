@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxt/test-utils',
     '@pinia/nuxt',
+    'nuxt-monaco-editor',
   ],
 
   nitro: {
