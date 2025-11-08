@@ -29,12 +29,6 @@ export const useMonacoConfig = () => {
     return configureJsonSyntaxOnly();
   };
 
-  // No-op function for compatibility (schema validation handled externally)
-  const updateInstanceSchema = async (schema: string) => {
-    // Schema validation is handled by external validation system
-    return true;
-  };
-
   // Common editor options
   const getEditorOptions = (isDarkMode = true) => ({
     automaticLayout: true,
@@ -49,7 +43,6 @@ export const useMonacoConfig = () => {
   return {
     configureSchemaEditor,
     configureInstanceEditor,
-    updateInstanceSchema,
     getEditorOptions,
   };
 };
