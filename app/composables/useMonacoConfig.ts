@@ -34,8 +34,8 @@ export const useMonacoConfig = () => {
     automaticLayout: true,
     minimap: { enabled: false },
     scrollBeyondLastLine: false,
-    wordWrap: 'on',
-    lineNumbers: 'on',
+    wordWrap: 'on' as const,
+    lineNumbers: 'on' as const,
     folding: true,
     theme: isDarkMode ? 'vs-dark' : 'vs',
   });
