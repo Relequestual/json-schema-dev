@@ -47,4 +47,3 @@
 - ✅ Complete
 - 🔄 In Progress
 - ❌ Not Started
-- 🔮 Future/Planned

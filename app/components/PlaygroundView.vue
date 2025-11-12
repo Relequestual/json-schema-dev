@@ -54,12 +54,12 @@
             </div>
           </template>
 
-          <div class="w-full h-96 border border-gray-200 rounded-md overflow-hidden">
-            <MonacoEditor
+          <div class="w-full h-96">
+            <CustomMonacoEditor
               v-model="playgroundStore.schema"
-              lang="json"
-              :options="{ ...editorOptions, placeholder: 'Enter your JSON Schema here...' }"
-              :style="{ width: '100%', height: '100%' }"
+              language="json"
+              :theme="colorMode.value === 'dark' ? 'vs-dark' : 'vs'"
+              :container-style="{ width: '100%', height: '100%' }"
             />
           </div>
         </UCard>
@@ -73,15 +73,12 @@
             </div>
           </template>
 
-          <div class="w-full h-96 border border-gray-200 rounded-md overflow-hidden">
-            <MonacoEditor
+          <div class="w-full h-96">
+            <CustomMonacoEditor
               v-model="playgroundStore.instance"
-              lang="json"
-              :options="{
-                ...editorOptions,
-                placeholder: 'Enter your JSON instance to validate...',
-              }"
-              :style="{ width: '100%', height: '100%' }"
+              language="json"
+              :theme="colorMode.value === 'dark' ? 'vs-dark' : 'vs'"
+              :container-style="{ width: '100%', height: '100%' }"
             />
           </div>
         </UCard>
@@ -105,7 +102,6 @@
 
 <script setup lang="ts">
 import { useDebounceFn } from '@vueuse/core';
-import { useMonacoConfig } from '@/composables/useMonacoConfig';
 
 // Import layout components
 import AppHeader from '~/components/layout/AppHeader.vue';
@@ -120,33 +116,8 @@ const validation = useValidation();
 // Import Pinia store
 const playgroundStore = usePlaygroundStore();
 
-// Import Monaco configuration composable
-const { configureSchemaEditor, configureInstanceEditor, getEditorOptions } = useMonacoConfig();
-
 // Get color mode for theme
 const colorMode = useColorMode();
-
-// Configure Monaco editors on mount
-onMounted(async () => {
-  await configureSchemaEditor();
-  await configureInstanceEditor();
-});
-
-// Get editor options from composable and make theme reactive
-const editorOptions = computed(() => {
-  const isDarkMode = colorMode.value === 'dark';
-  const baseEditorOptions = getEditorOptions(isDarkMode);
-
-  return {
-    ...baseEditorOptions,
-    // Disable built-in JSON Schema autocomplete
-    quickSuggestions: false,
-    suggestOnTriggerCharacters: false,
-    acceptSuggestionOnEnter: 'off' as const,
-    // Keep syntax error highlighting but disable occurrence highlighting
-    occurrencesHighlight: 'off' as const,
-  };
-});
 
 // Debounced validation with proper cancellation
 // Track the latest values to ensure we only process the most recent

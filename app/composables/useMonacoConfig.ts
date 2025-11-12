@@ -4,7 +4,7 @@
 export const useMonacoConfig = () => {
   // Configure basic JSON syntax validation only
   const configureJsonSyntaxOnly = async () => {
-    const monaco = await useMonaco();
+    const monaco = await import('monaco-editor');
     if (!monaco) return false;
 
     // Configure JSON language to only validate syntax, not schema

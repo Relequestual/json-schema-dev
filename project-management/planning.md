@@ -124,6 +124,7 @@
 - Advanced Editor Features (code folding, autocomplete, schema-aware suggestions)
 - File Operations: Import/export JSON and schema files
 - Settings Panel: Validator options and user preferences
+- **Bundle Optimization Review**: Evaluate further bundling of framework chunks to reduce worker invocations beyond current optimization level
 
 ## Current Implementation Status
 

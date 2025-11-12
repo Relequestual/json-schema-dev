@@ -5,6 +5,12 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  vite: {
+    optimizeDeps: {
+      include: ['monaco-editor'],
+    },
+  },
+
   modules: [
     '@nuxt/ui',
     '@nuxt/eslint',
@@ -14,7 +20,6 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxt/test-utils',
     '@pinia/nuxt',
-    'nuxt-monaco-editor',
   ],
 
   nitro: {
@@ -23,6 +28,22 @@ export default defineNuxtConfig({
     cloudflare: {
       deployConfig: true,
       nodeCompat: true,
+    },
+    // Bundle optimizations for Monaco Editor
+    inlineDynamicImports: true,
+    rollupConfig: {
+      output: {
+        manualChunks: (id) => {
+          // Bundle Monaco files together to reduce worker invocations
+          if (id.includes('monaco-editor')) {
+            return 'monaco-vendor';
+          }
+        },
+      },
+    },
+    compressPublicAssets: {
+      gzip: true,
+      brotli: true,
     },
   },
 });
