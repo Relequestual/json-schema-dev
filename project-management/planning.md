@@ -138,8 +138,8 @@
 
 ### Features In Progress 🔄
 
-- 🔄 **JSON Editor**: Currently basic textareas, Monaco Editor integration planned
-- 🔄 **Schema Editor**: Currently basic textareas, Monaco Editor integration planned
+- ✅ **JSON Editor**: Currently basic textareas, Monaco Editor integration planned
+- ✅ **Schema Editor**: Currently basic textareas, Monaco Editor integration planned
 - ✅ **Results Display**: State machine provides data, UI connection needed
 - ✅ **Real-time Validation**: Show live validation feedback as users type
 

@@ -30,13 +30,16 @@ export default defineNuxtConfig({
       nodeCompat: true,
     },
     // Bundle optimizations for Monaco Editor
-    inlineDynamicImports: true,
     rollupConfig: {
       output: {
         manualChunks: (id) => {
           // Bundle Monaco files together to reduce worker invocations
           if (id.includes('monaco-editor')) {
             return 'monaco-vendor';
+          }
+          // Ensure Nitro core modules stay together
+          if (id.includes('nitropack/dist/runtime')) {
+            return 'nitro-runtime';
           }
         },
       },
