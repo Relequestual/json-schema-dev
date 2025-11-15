@@ -32,7 +32,7 @@
           <div
             v-for="(error, i) in playgroundStore.schemaValidationErrors"
             :key="i"
-            class="font-mono text-sm bg-error-50 dark:bg-error-950/50 p-2 rounded border-l-4 border-error-500"
+            class="font-mono text-sm bg-red-100 dark:bg-red-950/50 text-red-900 dark:text-red-100 p-2 rounded border-l-4 border-red-500"
           >
             <pre class="whitespace-pre-wrap">{{ formatSchemaError(error) }}</pre>
           </div>
@@ -55,7 +55,7 @@
           <div
             v-for="(error, i) in playgroundStore.instanceValidationErrors"
             :key="i"
-            class="font-mono text-sm bg-error-50 dark:bg-error-950/50 p-2 rounded border-l-4 border-error-500"
+            class="font-mono text-sm bg-red-100 dark:bg-red-950/50 text-red-900 dark:text-red-100 p-2 rounded border-l-4 border-red-500"
           >
             <pre class="whitespace-pre-wrap">{{ formatValidationError(error) }}</pre>
           </div>
