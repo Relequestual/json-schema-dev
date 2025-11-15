@@ -1,6 +1,6 @@
 name = "json-schema-dev"
 # main is handled by the generated .output/server/wrangler.json
-compatibility_date = "2024-09-19"
+compatibility_date = "2025-11-15"
 compatibility_flags = ["nodejs_compat", "no_nodejs_compat_v2"]
 
 [build]
@@ -11,13 +11,12 @@ command = "pnpm run build"
 binding = "ASSETS"
 directory = ".output/public"
 
+# Environment variables
 [vars]
-# Add environment variables here
 NITRO_PRESET = "cloudflare-module"
+ENVIRONMENT = "production"
 
-# Uncomment and configure as needed:
-# [env.production]
-# vars = { ENV = "production" }
-
-# [env.staging]
-# vars = { ENV = "staging" }
+# Note: Single production deployment
+# - Worker name: json-schema-dev (clean, no suffix)
+# - Environment variables set during build via ENVIRONMENT=production
+# - Secrets managed via: pnpm wrangler secret put <NAME>

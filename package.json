@@ -8,7 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "deploy": "nuxt build && wrangler deploy",
+    "deploy": "ENVIRONMENT=production nuxt build && wrangler deploy",
     "deploy:preview": "wrangler dev",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
