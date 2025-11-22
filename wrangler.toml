@@ -1,5 +1,5 @@
 name = "json-schema-dev"
-# main is handled by the generated .output/server/wrangler.json
+main = ".output/server/index.mjs"
 compatibility_date = "2025-11-15"
 compatibility_flags = ["nodejs_compat", "no_nodejs_compat_v2"]
 
@@ -10,6 +10,13 @@ command = "pnpm run build"
 [assets]
 binding = "ASSETS"
 directory = ".output/public"
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "json-schema-playground"
+database_id = "a10c4eed-d46e-4983-a668-a9a72bdde06b"
+migrations_dir = "migrations"
 
 # Environment variables
 [vars]

@@ -1,75 +1,65 @@
-# Nuxt Minimal Starter
+# JSON Schema Playground
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Browser-based JSON Schema validation playground built with Nuxt 4 and deployed on Cloudflare Workers with D1 database support.
 
 ## Setup
 
 Make sure to install dependencies:
 
 ```bash
-# npm
-npm install
-
-# pnpm
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+## Development
 
-Start the development server on `http://localhost:3000`:
+Start the development server with D1 database support:
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
 pnpm dev
+```
 
-# yarn
-yarn dev
+This runs `wrangler dev` which provides:
 
-# bun
-bun run dev
+- Local development server on `http://localhost:8787`
+- Automatic D1 database bindings
+- Hot reload and file watching
+- Production-like environment
+
+### Database Setup
+
+First-time database setup:
+
+```bash
+pnpm db:setup
+```
+
+Apply new migrations:
+
+```bash
+pnpm db:migrate
 ```
 
 ## Production
 
-Build the application for production:
+Build and deploy to Cloudflare Workers:
 
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+pnpm deploy:prod
 ```
 
-Locally preview production build:
+Apply migrations to production database:
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+pnpm db:migrate:prod
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Available Scripts
+
+- `pnpm dev` - Start development server with D1 support
+- `pnpm dev:nuxt` - Start Nuxt-only development (no D1)
+- `pnpm build` - Build for production
+- `pnpm clean` - Clean build artifacts
+- `pnpm db:setup` - Apply database migrations
+- `pnpm db:migrate` - Apply migrations (local)
+- `pnpm db:migrate:prod` - Apply migrations (production)
+- `pnpm deploy:prod` - Build and deploy to production

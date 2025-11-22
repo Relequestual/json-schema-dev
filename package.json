@@ -4,12 +4,17 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "clean": "rm -rf .output .wrangler",
+    "dev": "wrangler dev",
+    "dev:nuxt": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "deploy:prod": "ENVIRONMENT=production nuxt build && wrangler deploy",
     "deploy:preview": "wrangler dev",
+    "db:migrate": "wrangler d1 migrations apply json-schema-playground --local",
+    "db:migrate:prod": "wrangler d1 migrations apply json-schema-playground",
+    "db:setup": "pnpm run db:migrate",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
@@ -45,6 +50,6 @@
     "eslint-config-prettier": "^10.1.8",
     "prettier": "3.6.2",
     "typescript": "^5.9.2",
-    "wrangler": "^4.27.0"
+    "wrangler": "^4.50.0"
   }
 }
