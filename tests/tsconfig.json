@@ -1,0 +1,26 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ES2022",
+    "lib": [
+      "ES2022"
+    ],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "types": [
+      "vitest/globals",
+      "@cloudflare/workers-types/experimental",
+      "@cloudflare/vitest-pool-workers"
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.d.ts"
+  ]
+}

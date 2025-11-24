@@ -15,6 +15,10 @@
     "db:migrate": "wrangler d1 migrations apply json-schema-playground --local",
     "db:migrate:prod": "wrangler d1 migrations apply json-schema-playground",
     "db:setup": "pnpm run db:migrate",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
@@ -46,10 +50,17 @@
   },
   "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a",
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.10.10",
+    "@cloudflare/workers-types": "^4.20251121.0",
+    "@types/node": "^24.10.1",
+    "@vitest/ui": "^3.2.4",
     "@vueuse/nuxt": "^13.8.0",
     "eslint-config-prettier": "^10.1.8",
+    "jsdom": "^27.2.0",
+    "miniflare": "^4.20251118.1",
     "prettier": "3.6.2",
     "typescript": "^5.9.2",
+    "vitest": "^3.2.4",
     "wrangler": "^4.50.0"
   }
 }
