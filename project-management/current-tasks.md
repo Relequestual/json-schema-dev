@@ -24,6 +24,7 @@
 - Create content hashing for deduplication
 - Build database queries for checking existing content and inserting new URLs
 - Handle collision detection and retry logic
+  - Allow importing of existing short URLs that cannot be used. Regenerate short ID if colission occurs
 
 ### API Endpoints Development
 
