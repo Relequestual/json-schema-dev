@@ -1,5 +1,17 @@
 # Current Tasks (Phase 3)
 
+## NEXT: Database Schema Migration Consolidation
+
+**Priority 1**: Merge and fix database migrations to implement normalized schema from the start
+
+- **Merge 0001 and 0002 into single migration file** (0001_complete_schema.sql)
+- Create tables with proper normalized design: content_hash in url_metadata, not shared_urls
+- Include chunking support fields from 0002 (is_multipart, part_index, total_parts, primary_part) in initial shared_urls table
+- Ensure proper UNIQUE constraints and indexes are established correctly
+- Remove 0002 file after merging
+- Test migration applies successfully on clean database
+- **Rationale**: No live data exists, so we can consolidate migrations and get the schema right from day one
+
 ## Key Decisions Needed
 
 ### Backend Service Selection ✅
@@ -8,7 +20,7 @@
 - Design database schema for shared URLs and metadata ✅
 - Define data structure and access patterns ✅
 
-### D1 Database Setup ✅
+### D1 Database Setup 🔄
 
 - Configure D1 database in wrangler.toml ✅
 - Create database schema with shared_urls and url_metadata tables ✅
@@ -17,14 +29,28 @@
 - Set up proper migration system with wrangler d1 migrations ✅
 - Configure development workflow with npm scripts (db:migrate, db:setup) ✅
 - Resolve assets + D1 bindings configuration with main script ✅
+- **Schema normalization migration** 🔄 (needs fixing - content_hash placement)
 
-### URL Generation & Deduplication Logic 🔄
+### URL Generation & Deduplication Logic ✅
 
-- Implement random short ID generation with configurable minimum length
-- Create content hashing for deduplication
-- Build database queries for checking existing content and inserting new URLs
-- Handle collision detection and retry logic
-  - Allow importing of existing short URLs that cannot be used. Regenerate short ID if colission occurs
+- Implement random short ID generation with configurable minimum length ✅
+- Create content hashing for deduplication ✅
+- Build database queries for checking existing content and inserting new URLs ✅
+- Handle collision detection and retry logic ✅
+  - Allow importing of existing short URLs that cannot be used. Regenerate short ID if colission occurs ✅
+- Must be able to split payload if row would be larger than 2MB. Cloudflare D1 limit. May need to adjust schema for this. Need to consider the impact of hashing and the ID of the row. ✅
+- Code optimization and database normalization design ✅
+- Bruno API test collection created ✅
+
+### Client-Side Compression Integration
+
+- Integrate gzip compression/decompression into payload handling system using native CompressionStream API
+- Implement compressPayload() and decompressPayload() functions with gzip + base64 encoding
+- Modify chunking system to work with compressed data
+- Update content hashing to work on uncompressed data for consistency (hash before compression)
+- Ensure gzip compression is applied before database storage
+- Test gzip compression ratios and performance impact vs uncompressed storage
+- Update TypeScript interfaces for compressed payload handling
 
 ### API Endpoints Development
 
@@ -42,7 +68,7 @@
 
 ### URL Encoding Strategy ✅
 
-- Choose compression for new URLs ✅ (can use modern compression)
+- Choose compression for new data
 - Backward compatibility via dual lookup ✅ (no LZ-string requirement for new URLs)
 - Migration approach defined ✅ (on-demand when URLs accessed)
 

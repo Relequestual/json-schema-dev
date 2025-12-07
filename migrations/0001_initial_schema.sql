@@ -5,7 +5,7 @@
 -- Main table for shared URLs with deduplication support
 CREATE TABLE shared_urls (
   short_id TEXT PRIMARY KEY,           -- Random string ID (e.g., 'abc123')
-  data_blob TEXT NOT NULL,             -- Compressed JSON Schema + instance data
+  data_blob TEXT NOT NULL,             -- Base64-encoded gzip compressed JSON data
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   content_hash TEXT UNIQUE NOT NULL    -- Hash of uncompressed data for deduplication
 );

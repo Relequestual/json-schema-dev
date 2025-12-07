@@ -28,6 +28,7 @@ PLANNING.md contains detailed implementation status tracking, technical specific
 - **When uncertain, say so** - If you don't know something, say "I'm not sure" and suggest relevant docs to check
 - **Never make assumptions** - It's FAR better to admit uncertainty than to present incorrect information as fact
 - **Prefer documentation over assumptions** - Always suggest checking official sources rather than guessing
+- **Scope discipline** - Only implement what is explicitly requested. Ask before adding features, refactoring, or making changes beyond the stated request
 - **Preserve critical planning information** - When updating documentation, NEVER remove existing sections without explicit confirmation. Instead, enhance sections with status updates, add new sections, or ask before removing anything that tracks features, requirements, or user-facing functionality
 
 ## 👤 User Preferences & Patterns
