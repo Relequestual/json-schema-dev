@@ -25,3 +25,6 @@ logs
 
 # Cloudflare wrangler
 .wrangler
+
+# API collections
+api-collections
