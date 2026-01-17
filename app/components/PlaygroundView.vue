@@ -16,7 +16,11 @@
     <!-- Error state for shared URLs -->
     <div v-else-if="sharedUrlError" class="flex-1 flex items-center justify-center px-4">
       <UCard class="max-w-md mx-auto">
-        <UAlert title="Invalid Share URL" :description="sharedUrlError" color="error" />
+        <UAlert
+          :title="isDatabaseUnavailable ? 'Service Unavailable' : 'Invalid Share URL'"
+          :description="sharedUrlError"
+          :color="isDatabaseUnavailable ? 'warning' : 'error'"
+        />
         <div class="mt-4">
           <UButton
             variant="outline"
@@ -110,6 +114,20 @@ import AppFooter from '~/components/layout/AppFooter.vue';
 // Import validation components
 import Results from '~/components/validation/Results.vue';
 
+// Props for server-side rendered shared data
+import type { ShareResponse } from '~/utils/sharing';
+
+const props = withDefaults(
+  defineProps<{
+    sharedData?: ShareResponse | null;
+    loadError?: { message: string } | null;
+  }>(),
+  {
+    sharedData: undefined,
+    loadError: undefined,
+  }
+);
+
 // Import validation composable
 const validation = useValidation();
 
@@ -168,46 +186,51 @@ const route = useRoute();
 // Detect if this is a shared URL (route starts with /s/)
 const isSharedUrl = computed(() => route.path.startsWith('/s/'));
 
-// Extract shared data from URL path parameter (for /s/{data} route)
-const sharedData = computed(() => {
-  if (isSharedUrl.value) {
-    // When using custom routing with :data parameter
-    return (route.params.data as string) || null;
-  }
-  return null;
-});
-
 // Loading and error states for shared URLs
 const isLoadingSharedData = ref(false);
 const sharedUrlError = ref<string | null>(null);
 
+// Determine error state and message
+const isDatabaseUnavailable = computed(() => props.loadError?.message === 'DATABASE_UNAVAILABLE');
+
+// Check if this is a shared URL that failed to load server-side
+if (isSharedUrl.value && !props.sharedData) {
+  if (isDatabaseUnavailable.value) {
+    sharedUrlError.value =
+      'The database service is currently unavailable. Please try again later or continue to use the playground without loading shared data.';
+  } else if (props.loadError) {
+    sharedUrlError.value = 'Shared URL not found or could not be loaded.';
+  }
+}
+
 // Handle shared URL data loading
 onMounted(async () => {
-  // Initialize playground with default data if not loading shared URL
-  if (!isSharedUrl.value) {
-    playgroundStore.initialize();
-    return;
-  }
+  // Handle shared URL data initialization
+  if (isSharedUrl.value) {
+    if (props.sharedData) {
+      // Use server-side rendered data
+      try {
+        if (props.sharedData.schema) {
+          playgroundStore.schema = props.sharedData.schema;
+          validation.updateSchema(props.sharedData.schema);
+        }
+        if (props.sharedData.instance) {
+          playgroundStore.instance = props.sharedData.instance;
+          validation.updateInstance(props.sharedData.instance);
+        }
 
-  // Handle shared URL loading
-  if (sharedData.value) {
-    isLoadingSharedData.value = true;
-    try {
-      // TODO: Implement URL decoding logic
-      // This will use useSharing composable to decode the data
-      // and load it into the playground stores
-      console.log('Loading shared data from URL:', sharedData.value);
-
-      // Placeholder - actual implementation will decode and load data
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate loading
-
-      // Note: We keep the original URL in place, no redirect
-    } catch (err) {
-      console.error('Failed to load shared data:', err);
-      sharedUrlError.value = 'Failed to load shared data from URL';
-    } finally {
-      isLoadingSharedData.value = false;
+        // TODO: Handle validators and configs when validator system is implemented
+        // props.sharedData.implementations.validators
+        // props.sharedData.implementations.configs
+        console.log('Loaded shared data from server-side rendering');
+      } catch (error) {
+        console.error('Failed to load shared data:', error);
+        sharedUrlError.value = 'Failed to load shared data. The URL may be invalid or corrupted.';
+      }
     }
+  } else {
+    // Initialize playground with default data for non-shared URLs
+    playgroundStore.initialize();
   }
 });
 

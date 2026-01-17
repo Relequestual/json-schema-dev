@@ -22,6 +22,11 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
   ],
 
+  icon: {
+    // Use local bundling for Cloudflare Workers - remote API calls add latency and aren't reliable in edge runtime
+    serverBundle: 'local',
+  },
+
   nitro: {
     preset: 'cloudflare-module',
     compatibilityDate: '2025-08-01',
