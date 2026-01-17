@@ -30,6 +30,7 @@ PLANNING.md contains detailed implementation status tracking, technical specific
 - **Prefer documentation over assumptions** - Always suggest checking official sources rather than guessing
 - **Scope discipline** - Only implement what is explicitly requested. Ask before adding features, refactoring, or making changes beyond the stated request
 - **Preserve critical planning information** - When updating documentation, NEVER remove existing sections without explicit confirmation. Instead, enhance sections with status updates, add new sections, or ask before removing anything that tracks features, requirements, or user-facing functionality
+- **Clean build first for runtime errors** - If code encounters errors at runtime (especially mysterious warnings or unexpected behavior), always try a clean build first: `rm -rf .output && pnpm build`. Stale build artifacts in `.output/` can cause confusing errors that don't exist in the source code
 
 ## 👤 User Preferences & Patterns
 
