@@ -4,7 +4,7 @@
  */
 
 import type { D1Database, D1PreparedStatement } from '@cloudflare/workers-types/experimental';
-import type { ShareablePayload } from './payloadTypes';
+import type { StoredShare } from './payloadTypes';
 import type { PayloadChunk } from './payloadChunking';
 import { createContentHash } from './contentHashing';
 import { chunkPayload, reconstructPayload, validateChunks } from './payloadChunking';
@@ -83,7 +83,7 @@ export async function checkIdExists(db: D1Database, shortId: string): Promise<bo
  */
 export async function insertSharedUrl(
   db: D1Database,
-  payload: ShareablePayload,
+  payload: StoredShare,
   metadata?: {
     userAgent?: string;
     ipAddress?: string;
@@ -193,10 +193,7 @@ export async function insertSharedUrl(
 /**
  * Retrieve a shared URL by short ID
  */
-export async function getSharedUrl(
-  db: D1Database,
-  shortId: string
-): Promise<ShareablePayload | null> {
+export async function getSharedUrl(db: D1Database, shortId: string): Promise<StoredShare | null> {
   // First, get the primary row to check if it's multipart
   const primaryRow = await db
     .prepare('SELECT * FROM shared_urls WHERE short_id = ?')

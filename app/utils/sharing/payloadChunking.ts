@@ -3,7 +3,7 @@
  * Handles splitting large payloads for D1's 2MB row limit and reconstruction
  */
 
-import type { ShareablePayload } from './payloadTypes';
+import type { StoredShare } from './payloadTypes';
 
 /**
  * Configuration for payload chunking
@@ -60,7 +60,7 @@ export function calculateByteSize(str: string): number {
  * Split a large payload into chunks for D1 storage
  */
 export function chunkPayload(
-  payload: ShareablePayload,
+  payload: StoredShare,
   config: ChunkingConfig = DEFAULT_CHUNKING_CONFIG
 ): ChunkingResult {
   // Serialize the payload to JSON
@@ -127,7 +127,7 @@ export function chunkPayload(
 /**
  * Reconstruct a payload from chunks
  */
-export function reconstructPayload(chunks: PayloadChunk[]): ShareablePayload {
+export function reconstructPayload(chunks: PayloadChunk[]): StoredShare {
   // Handle single chunk case
   if (chunks.length === 1 && chunks[0] && !chunks[0].isMultipart) {
     return JSON.parse(chunks[0].data);

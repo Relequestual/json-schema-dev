@@ -3,6 +3,11 @@
  * Centralized exports for URL sharing functionality
  */
 
+// Imports needed for helper functions below
+import type { D1Database } from '@cloudflare/workers-types/experimental';
+import { insertSharedUrl, getSharedUrl, type ShareResult } from './databaseOperations';
+import type { StoredShare } from './payloadTypes';
+
 // ID Generation
 export {
   generateRandomId,
@@ -15,13 +20,16 @@ export {
 // Content Hashing
 export { createContentHash, verifyContentMatch, createShortHash } from './contentHashing';
 
-// Payload Types
+// Share Data Types
 export {
-  type ShareablePayload,
-  type ShareablePayloadV1,
-  type AnyShareablePayload,
-  isShareablePayloadV1,
-  createShareablePayload,
+  type ShareDataCore,
+  type ShareRequest,
+  type StoredShare,
+  type StoredShareV1,
+  type ShareResponse,
+  type AnyStoredShare,
+  isStoredShareV1,
+  createStoredShare,
 } from './payloadTypes';
 
 // Payload Chunking
@@ -40,7 +48,6 @@ export {
 export {
   insertSharedUrl,
   getSharedUrl,
-  getUrlMetadata,
   deleteSharedUrl,
   checkExistingContent,
   checkIdExists,
@@ -49,24 +56,18 @@ export {
   type ShareResult,
 } from './databaseOperations';
 
-// Import for function implementations
-import type { D1Database } from '@cloudflare/workers-types/experimental';
-import { insertSharedUrl, getSharedUrl } from './databaseOperations';
-import type { ShareablePayload } from './payloadTypes';
-import type { ShareResult } from './databaseOperations';
-
 /**
  * Complete sharing workflow - high-level API
  */
 export async function shareContent(
   db: D1Database,
-  payload: ShareablePayload,
+  payload: StoredShare,
   metadata?: {
     userAgent?: string;
     ipAddress?: string;
   }
 ): Promise<ShareResult> {
-  return await insertSharedUrl(db, payload, metadata);
+  return insertSharedUrl(db, payload, metadata);
 }
 
 /**
@@ -75,6 +76,6 @@ export async function shareContent(
 export async function retrieveSharedContent(
   db: D1Database,
   shortId: string
-): Promise<ShareablePayload | null> {
-  return await getSharedUrl(db, shortId);
+): Promise<StoredShare | null> {
+  return getSharedUrl(db, shortId);
 }

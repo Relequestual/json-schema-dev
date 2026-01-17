@@ -3,14 +3,14 @@
  * Provides consistent hashing for deduplication of JSON Schema + instance data
  */
 
-import type { ShareablePayload } from './payloadTypes';
+import type { StoredShare } from './payloadTypes';
 
 /**
  * Create content hash for deduplication
  * Hash is calculated on complete payload content (preserving user formatting)
  * Includes all fields: schema, instance, metadata, version, and any future additions
  */
-export async function createContentHash(payload: ShareablePayload): Promise<string> {
+export async function createContentHash(payload: StoredShare): Promise<string> {
   // Hash the complete payload (all fields, all versions)
   const jsonContent = JSON.stringify(payload);
 
@@ -31,8 +31,8 @@ export async function createContentHash(payload: ShareablePayload): Promise<stri
  * Useful for validation and testing
  */
 export async function verifyContentMatch(
-  payload1: ShareablePayload,
-  payload2: ShareablePayload
+  payload1: StoredShare,
+  payload2: StoredShare
 ): Promise<boolean> {
   const hash1 = await createContentHash(payload1);
   const hash2 = await createContentHash(payload2);
