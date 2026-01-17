@@ -15,7 +15,8 @@
     "db:migrate": "wrangler d1 migrations apply json-schema-playground --local",
     "db:migrate:prod": "wrangler d1 migrations apply json-schema-playground",
     "db:setup": "pnpm run db:migrate",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
@@ -28,6 +29,7 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
+    "@hyperjump/json-schema": "^1.17.2",
     "@nuxt/eslint": "1.7.1",
     "@nuxt/fonts": "0.11.4",
     "@nuxt/icon": "1.15.0",
@@ -41,6 +43,7 @@
     "@xstate/vue": "^5.0.0",
     "ajv": "^8.17.1",
     "eslint": "^9.0.0",
+    "lodash": "^4.17.21",
     "monaco-editor": "^0.54.0",
     "nuxt": "^4.0.1",
     "pinia": "^3.0.3",
@@ -52,6 +55,7 @@
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.10.10",
     "@cloudflare/workers-types": "^4.20251121.0",
+    "@types/lodash": "^4.17.21",
     "@types/node": "^24.10.1",
     "@vitest/ui": "^3.2.4",
     "@vueuse/nuxt": "^13.8.0",
