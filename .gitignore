@@ -26,5 +26,11 @@ logs
 # Cloudflare wrangler
 .wrangler
 
+# Wrangler state and local DB artifacts
+.wrangler/state
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
 # API collections
 api-collections
