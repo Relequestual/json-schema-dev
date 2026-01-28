@@ -30,15 +30,28 @@
 - Code optimization and database normalization design ✅
 - Bruno API test collection created ✅
 
-### Client-Side Compression Integration
+### Client Side and Server Side Compression Integration
 
-- Integrate gzip compression/decompression into payload handling system using native CompressionStream API
-- Implement compressPayload() and decompressPayload() functions with gzip + base64 encoding
-- Modify chunking system to work with compressed data
-- Update content hashing to work on uncompressed data for consistency (hash before compression)
-- Ensure gzip compression is applied before database storage
-- Test gzip compression ratios and performance impact vs uncompressed storage
-- Update TypeScript interfaces for compressed payload handling
+**Client Side Responsibilities**
+
+- Payload format: send the original payload as JSON in the request body (`Content-Type: application/json`).
+- Transport compression: gzip the request body and include `Content-Encoding: gzip`.
+- No chunking: do NOT split or chunk payloads; send the full document in one request.
+- No hashing: do NOT compute or send any content hash.
+- No binary blobs: keep payload as JSON (transport may be gzip).
+- UX checks only: perform client-side size/validation checks for UX and show guidance for oversized payloads; do not attempt to divide or store chunks client-side.
+- Metadata: include application metadata inside the JSON as needed.
+
+**Server Side Responsibilities**
+
+- Accept `application/json` with `Content-Encoding: gzip`; decompress transport gzip to obtain raw UTF‑8 JSON bytes.
+- Authoritative hash: always compute the authoritative `content_hash` server-side over the raw UTF‑8 JSON bytes; ignore any client-provided hashes.
+- Deduplication: use the server-computed `content_hash` for indexed lookup; if found, return existing short URL.
+- Storage compression & chunking: if not deduplicated, compress for storage (binary gzip or configured), split compressed data into D1-safe BLOB chunks, and store them; server controls chunking.
+- No reassembly step from client: server does its own chunking pipeline; client does not send chunks.
+- Verification & atomicity: verify integrity during compression/chunking and commit atomically; reject requests that fail verification or exceed configured limits.
+- Validation & security: validate payload contents, sanitize inputs, enforce rate/size limits, and never rely on client-supplied data for authorization or deduplication decisions.
+- Errors: return clear 4xx for client errors and 5xx for server failures.
 
 ### API Endpoints Development ✅
 
