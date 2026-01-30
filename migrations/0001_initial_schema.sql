@@ -5,7 +5,7 @@
 -- Main table for shared URLs with chunking support
 CREATE TABLE shared_urls (
   short_id TEXT PRIMARY KEY,           -- Random string ID (e.g., 'abc123')
-  data_blob TEXT NOT NULL,             -- Base64-encoded gzip compressed JSON data
+  data_blob BLOB NOT NULL,             -- Gzip compressed JSON data (binary)
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   -- Chunking fields for D1 2MB limit support
   is_multipart BOOLEAN DEFAULT FALSE,  -- Whether this is part of a chunked payload
