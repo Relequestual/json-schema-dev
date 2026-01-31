@@ -1,4 +1,4 @@
-import { setup } from 'xstate';
+import { setup, fromPromise } from 'xstate';
 import type { ErrorObject } from 'ajv';
 import { usePlaygroundStore } from '@/stores/playground';
 
@@ -17,27 +17,43 @@ export type ValidationEvent =
 
 export const validationMachine = setup({
   types: {} as {
-    context: {}; // No context - pure workflow controller
+    context: undefined; // No context - pure workflow controller
     events: ValidationEvent;
   },
   actors: {
-    parseJSON: 'parseJSON' as any,
-    validateSchema: 'validateSchema' as any,
-    validateInstance: 'validateInstance' as any,
+    // Actor contract: Parse JSON text and return any valid JSON value
+    parseJSON: fromPromise<JSONValue, string>(async () => {
+      throw new Error('parseJSON actor must be provided');
+    }),
+    // Actor contract: Validate schema and return AJV errors or null
+    validateSchema: fromPromise<ErrorObject[] | null, unknown>(async () => {
+      throw new Error('validateSchema actor must be provided');
+    }),
+    // Actor contract: Validate instance against schema
+    validateInstance: fromPromise<
+      { isValid: boolean; errors: ErrorObject[] | null },
+      { schema: unknown; instance: unknown }
+    >(async () => {
+      throw new Error('validateInstance actor must be provided');
+    }),
   },
   actions: {
     // Update schema text and clear all schema-related errors
-    updateSchema: ({ event }) => {
+    updateSchema: ({ event }: { event: ValidationEvent }) => {
       const store = usePlaygroundStore();
-      store.schema = (event as any).schemaText;
+      if (event.type === 'UPDATE_SCHEMA') {
+        store.schema = event.schemaText;
+      }
       store.schemaParseError = null;
       store.schemaValidationErrors = null;
       store.isValid = null;
     },
     // Update instance text and clear all instance-related errors
-    updateInstance: ({ event }) => {
+    updateInstance: ({ event }: { event: ValidationEvent }) => {
       const store = usePlaygroundStore();
-      store.instance = (event as any).instanceText;
+      if (event.type === 'UPDATE_INSTANCE') {
+        store.instance = event.instanceText;
+      }
       store.instanceParseError = null;
       store.instanceValidationErrors = null;
       store.isValid = null;
@@ -58,8 +74,8 @@ export const validationMachine = setup({
           {
             // If schema is completely empty (no content), just update and stay in idle
             target: 'idle',
-            guard: ({ event }) => {
-              const schemaText = (event as any).schemaText;
+            guard: ({ event }: { event: Extract<ValidationEvent, { type: 'UPDATE_SCHEMA' }> }) => {
+              const schemaText = event.schemaText;
               return schemaText === '';
             },
             actions: [
@@ -84,8 +100,12 @@ export const validationMachine = setup({
           {
             // If instance editor is completely empty (no characters), just update and stay in idle
             target: 'idle',
-            guard: ({ event }) => {
-              const instanceText = (event as any).instanceText;
+            guard: ({
+              event,
+            }: {
+              event: Extract<ValidationEvent, { type: 'UPDATE_INSTANCE' }>;
+            }) => {
+              const instanceText = event.instanceText;
               return instanceText === '';
             },
             actions: [
@@ -116,15 +136,18 @@ export const validationMachine = setup({
       },
       invoke: {
         src: 'parseJSON',
-        input: ({ event }: { event: any }) => {
+        input: ({ event }) => {
           console.log('[invoke input] parsingSchema event:', event);
-          return event.schemaText;
+          if (event.type === 'UPDATE_SCHEMA') {
+            return event.schemaText;
+          }
+          return '';
         },
         onDone: {
           target: 'validatingSchema',
           actions: ({ event }) => {
             const store = usePlaygroundStore();
-            store.parsedSchema = event.output as string | boolean;
+            store.parsedSchema = event.output;
             store.schemaParseError = null;
           },
         },
@@ -132,8 +155,11 @@ export const validationMachine = setup({
           target: 'schemaParseError',
           actions: ({ event }) => {
             const store = usePlaygroundStore();
-            const error = event.error as Error;
-            store.schemaParseError = error?.message || 'Invalid JSON in JSON Schema';
+            const errorMessage =
+              event.error && typeof event.error === 'object' && 'message' in event.error
+                ? String(event.error.message)
+                : 'Invalid JSON in JSON Schema';
+            store.schemaParseError = errorMessage;
             store.parsedSchema = null;
           },
         },
@@ -147,9 +173,12 @@ export const validationMachine = setup({
       },
       invoke: {
         src: 'parseJSON',
-        input: ({ event }: { event: any }) => {
+        input: ({ event }) => {
           console.log('[invoke input] parsingInstance event:', event);
-          return event.instanceText;
+          if (event.type === 'UPDATE_INSTANCE') {
+            return event.instanceText;
+          }
+          return '';
         },
         onDone: [
           {
@@ -161,7 +190,7 @@ export const validationMachine = setup({
             },
             actions: ({ event }) => {
               const store = usePlaygroundStore();
-              store.parsedInstance = event.output as JSONValue;
+              store.parsedInstance = event.output;
               store.instanceParseError = null;
             },
           },
@@ -170,7 +199,7 @@ export const validationMachine = setup({
             target: 'instanceParsed',
             actions: ({ event }) => {
               const store = usePlaygroundStore();
-              store.parsedInstance = event.output as JSONValue;
+              store.parsedInstance = event.output;
               store.instanceParseError = null;
             },
           },
@@ -179,8 +208,11 @@ export const validationMachine = setup({
           target: 'instanceParseError',
           actions: ({ event }) => {
             const store = usePlaygroundStore();
-            const error = event.error as Error;
-            store.instanceParseError = error?.message || 'Invalid JSON in instance';
+            const errorMessage =
+              event.error && typeof event.error === 'object' && 'message' in event.error
+                ? String(event.error.message)
+                : 'Invalid JSON in instance';
+            store.instanceParseError = errorMessage;
             store.parsedInstance = null;
           },
         },
@@ -242,7 +274,7 @@ export const validationMachine = setup({
             },
             actions: ({ event }) => {
               const store = usePlaygroundStore();
-              store.schemaValidationErrors = event.output as ErrorObject[];
+              store.schemaValidationErrors = event.output;
             },
           },
           {
@@ -262,7 +294,7 @@ export const validationMachine = setup({
               );
               return instanceReady;
             },
-            actions: ({ event }) => {
+            actions: () => {
               const store = usePlaygroundStore();
               store.schemaValidationErrors = null;
             },
@@ -275,7 +307,7 @@ export const validationMachine = setup({
                 console.log(
                   '🔍 validatingSchema onDone - going to schemaValidated (instance not ready)'
                 ),
-              ({ event }) => {
+              () => {
                 const store = usePlaygroundStore();
                 store.schemaValidationErrors = null;
               },
@@ -288,13 +320,17 @@ export const validationMachine = setup({
             ({ event }) => console.log('❌ validatingSchema onError:', event.error),
             ({ event }) => {
               const store = usePlaygroundStore();
+              const errorMessage =
+                event.error && typeof event.error === 'object' && 'message' in event.error
+                  ? String(event.error.message)
+                  : 'Schema validation failed';
               store.schemaValidationErrors = [
                 {
                   instancePath: '',
                   schemaPath: '',
                   keyword: 'error',
                   params: {},
-                  message: (event.error as Error)?.message || 'Schema validation failed',
+                  message: errorMessage,
                 } as ErrorObject,
               ];
             },
@@ -320,13 +356,12 @@ export const validationMachine = setup({
             ({ event }) => {
               console.log('✅ validatingInstance onDone - full event:', event);
               console.log('✅ validatingInstance onDone - output:', event.output);
-              const output = event.output as { isValid: boolean; errors: ErrorObject[] | null };
-              console.log('✅ validatingInstance onDone - isValid:', output.isValid);
-              console.log('✅ validatingInstance onDone - errors:', output.errors);
+              console.log('✅ validatingInstance onDone - isValid:', event.output.isValid);
+              console.log('✅ validatingInstance onDone - errors:', event.output.errors);
 
               const store = usePlaygroundStore();
-              store.isValid = output.isValid;
-              store.instanceValidationErrors = output.errors;
+              store.isValid = event.output.isValid;
+              store.instanceValidationErrors = event.output.errors;
             },
           ],
         },
@@ -336,21 +371,26 @@ export const validationMachine = setup({
             ({ event }) => {
               console.log('❌ validatingInstance onError - full event:', event);
               console.log('❌ validatingInstance onError - error:', event.error);
-              console.log(
-                '❌ validatingInstance onError - error message:',
-                (event.error as Error)?.message
-              );
+              const errorMessage =
+                event.error && typeof event.error === 'object' && 'message' in event.error
+                  ? String(event.error.message)
+                  : 'Validation failed';
+              console.log('❌ validatingInstance onError - error message:', errorMessage);
             },
             ({ event }) => {
               const store = usePlaygroundStore();
               store.isValid = false;
+              const errorMessage =
+                event.error && typeof event.error === 'object' && 'message' in event.error
+                  ? String(event.error.message)
+                  : 'Validation failed';
               store.instanceValidationErrors = [
                 {
                   instancePath: '',
                   schemaPath: '',
                   keyword: 'error',
                   params: {},
-                  message: (event.error as Error)?.message || 'Validation failed',
+                  message: errorMessage,
                 } as ErrorObject,
               ];
             },
