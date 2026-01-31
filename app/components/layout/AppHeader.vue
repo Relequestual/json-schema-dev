@@ -19,9 +19,7 @@
             Specification
           </UButton>
 
-          <UButton variant="ghost" external to="https://json-schema.org">
-            JSON-Schema.org
-          </UButton>
+          <UButton variant="ghost" external to="https://json-schema.org"> JSON-Schema.org </UButton>
         </div>
 
         <!-- Actions -->
@@ -33,11 +31,11 @@
           <UButton variant="ghost" icon="i-heroicons-cog-6-tooth" @click="toggleSettings" />
 
           <!-- GitHub Link -->
-          <UButton 
-            variant="ghost" 
-            icon="i-simple-icons-github" 
+          <UButton
+            variant="ghost"
+            icon="i-simple-icons-github"
             external
-            to="https://github.com/Relequestual/json-schema-dev" 
+            to="https://github.com/Relequestual/json-schema-dev"
           />
         </div>
       </nav>
@@ -52,5 +50,5 @@
 const toggleSettings = () => {
   // Toggle settings panel/modal
   // Implementation will use settings store
-}
+};
 </script>

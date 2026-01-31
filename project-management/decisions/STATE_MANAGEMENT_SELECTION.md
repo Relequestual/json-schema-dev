@@ -154,10 +154,7 @@ export const useEditorStore = defineStore('editor', () => {
     isValidating.value = true;
     try {
       // validation logic
-      validationResults.value = await validate(
-        jsonContent.value,
-        schemaContent.value
-      );
+      validationResults.value = await validate(jsonContent.value, schemaContent.value);
     } catch (error) {
       // error handling
     } finally {

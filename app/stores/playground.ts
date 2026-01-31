@@ -5,7 +5,7 @@ import { defineStore } from 'pinia';
 import type { ErrorObject } from 'ajv';
 
 // Import JSONValue type from validation machine to maintain consistency
-type JSONValue = string | number | boolean | null | any[] | { [key: string]: any };
+type JSONValue = string | number | boolean | null | unknown[] | { [key: string]: unknown };
 
 export const usePlaygroundStore = defineStore('playground', () => {
   // Core content state

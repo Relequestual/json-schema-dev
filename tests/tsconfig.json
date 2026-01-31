@@ -4,9 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "target": "ES2022",
-    "lib": [
-      "ES2022"
-    ],
+    "lib": ["ES2022"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -19,8 +17,5 @@
       "@cloudflare/vitest-pool-workers"
     ]
   },
-  "include": [
-    "**/*.ts",
-    "**/*.d.ts"
-  ]
+  "include": ["**/*.ts", "**/*.d.ts"]
 }

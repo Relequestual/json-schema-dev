@@ -5,6 +5,7 @@ This document describes the XState-based validation machine implementation for t
 ## Overview
 
 The validation machine manages the complete JSON Schema validation workflow:
+
 1. **JSON Parsing** - Parse schema and instance text into JSON objects
 2. **Schema Validation** - Validate that the schema is a valid JSON Schema
 3. **Instance Validation** - Validate the instance against the schema
@@ -16,7 +17,7 @@ The validation machine manages the complete JSON Schema validation workflow:
 
 - **`idle`** - Waiting for input or validation trigger
 - **`parsingSchema`** - Parsing schema JSON text
-- **`parsingInstance`** - Parsing instance JSON text  
+- **`parsingInstance`** - Parsing instance JSON text
 - **`parsingBoth`** - Parallel parsing of both schema and instance
 - **`checkingBothParsed`** - Check if both JSON objects are ready
 - **`validatingSchema`** - Validating schema with AJV's validateSchema
@@ -50,17 +51,17 @@ interface ValidationContext {
   // Input text
   schemaText: string;
   instanceText: string;
-  
+
   // Parsed JSON objects
   parsedSchema: any | null;
   parsedInstance: any | null;
-  
+
   // Error states
   schemaParseError: string | null;
   instanceParseError: string | null;
   schemaValidationErrors: ErrorObject[] | null;
   instanceValidationErrors: ErrorObject[] | null;
-  
+
   // Results
   isValid: boolean | null;
   debounceMs: number;
@@ -72,18 +73,21 @@ interface ValidationContext {
 The machine uses three services for async operations:
 
 ### `parseJSON`
+
 - **Input**: JSON text string
 - **Output**: Parsed JavaScript object
 - **Error**: Parse error message
 - **Logic**: Simple `JSON.parse()` with error handling
 
-### `validateSchema` 
+### `validateSchema`
+
 - **Input**: Parsed schema object
 - **Output**: `ErrorObject[]` if invalid, `null` if valid
 - **Error**: Validation failure
 - **Logic**: Uses AJV's `validateSchema()` method
 
 ### `validateInstance`
+
 - **Input**: `{ schema, instance }` object pair
 - **Output**: `{ isValid: boolean, errors: ErrorObject[] | null }`
 - **Error**: Compilation or validation failure
@@ -92,8 +96,9 @@ The machine uses three services for async operations:
 ## Workflow Logic
 
 ### Happy Path Flow
+
 1. User types in schema → `UPDATE_SCHEMA` → `parsingSchema`
-2. Schema parses successfully → `validatingSchema` 
+2. Schema parses successfully → `validatingSchema`
 3. Schema is valid JSON Schema → `validatingInstance` (if instance ready)
 4. User types in instance → `UPDATE_INSTANCE` → `parsingInstance`
 5. Instance parses successfully → `checkingBothParsed`
@@ -101,12 +106,14 @@ The machine uses three services for async operations:
 7. Validation completes → `validationComplete`
 
 ### Error Handling
+
 - **JSON Parse Errors**: Stay in error state until user fixes input
 - **Schema Validation Errors**: Show schema errors, don't proceed to instance validation
 - **Instance Validation Errors**: Show instance validation errors but consider flow complete
 - **All Error States**: Allow user to update either input to retry
 
 ### Parallel Processing
+
 When `VALIDATE` event is sent, the machine uses parallel states to parse both schema and instance simultaneously, then proceeds when both are complete.
 
 ## Integration with Previous Implementation
@@ -114,19 +121,22 @@ When `VALIDATE` event is sent, the machine uses parallel states to parse both sc
 This design preserves the exact validation logic from the previous Vue 2 app:
 
 ### From `App.vue`
+
 - **Debounced validation**: Implemented via machine context and composable
-- **JSON parsing**: Matches JSONEditor emit pattern  
+- **JSON parsing**: Matches JSONEditor emit pattern
 - **AJV setup**: Same options (`allErrors: true, verbose: true`)
-- **Schema validation**: Uses `ajv.validateSchema()` 
+- **Schema validation**: Uses `ajv.validateSchema()`
 - **Instance validation**: Uses `ajv.compile()` + `validator(instance)`
 - **Error formatting**: Same error message format
 
 ### From `JSONEditor.vue`
+
 - **JSON parsing**: Replicates jsonlint check logic
 - **Parse error handling**: Same error state management
 - **Valid status tracking**: Same boolean validation states
 
 ### From `Results.vue`
+
 - **Error display**: Same error categorization and formatting
 - **Success states**: Same validation success detection
 
@@ -135,24 +145,28 @@ This design preserves the exact validation logic from the previous Vue 2 app:
 The `useValidation()` composable provides:
 
 ### Reactive State
+
 - `snapshot` - Current machine snapshot
 - `currentState` - Current state name
 - `context` - Machine context data
 
-### Computed Status  
+### Computed Status
+
 - `isValidating` - Machine is in a validation state
 - `hasErrors` - Any errors present
 - `isValidationComplete` - Validation flow finished
-- `validationSuccess` - Validation completed successfully  
+- `validationSuccess` - Validation completed successfully
 - `validationFailed` - Validation completed with errors
 
 ### Error Messages
+
 - `schemaValidationErrorMessages` - Formatted schema errors
 - `instanceValidationErrorMessages` - Formatted instance errors
 
 ### Actions
+
 - `updateSchema(text)` - Update schema and trigger parsing
-- `updateInstance(text)` - Update instance and trigger parsing  
+- `updateInstance(text)` - Update instance and trigger parsing
 - `triggerValidation()` - Manual validation trigger
 - `clearErrors()` - Clear current errors
 - `reset()` - Reset to initial state
@@ -169,8 +183,9 @@ The `useValidation()` composable provides:
 ## Future Extensibility
 
 This design supports future enhancements:
+
 - **Multiple Validators**: Add WASM validators as additional services
-- **Draft Support**: Extend schema validation for different JSON Schema drafts  
+- **Draft Support**: Extend schema validation for different JSON Schema drafts
 - **Performance**: Add caching states for compiled schemas
 - **Sharing**: Add states for URL encoding/decoding shared data
 - **Themes**: Add UI state management for editor themes

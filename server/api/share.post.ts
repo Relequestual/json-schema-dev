@@ -5,7 +5,7 @@
 
 import { isPlainObject } from 'lodash';
 import { shareContent, createStoredShare } from '~/utils/sharing';
-import type { ShareRequest, ShareDataCore } from '~/utils/sharing';
+import type { ShareDataCore } from '~/utils/sharing';
 
 // Type guards
 function isHttpError(error: unknown): error is { statusCode: number; statusMessage?: string } {
@@ -13,7 +13,7 @@ function isHttpError(error: unknown): error is { statusCode: number; statusMessa
     typeof error === 'object' &&
     error !== null &&
     'statusCode' in error &&
-    typeof (error as any).statusCode === 'number'
+    typeof (error as { statusCode?: unknown }).statusCode === 'number'
   );
 }
 

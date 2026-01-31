@@ -21,11 +21,7 @@
   "peacock.color": "#42b883",
   "eslint.useFlatConfig": true,
   "eslint.run": "onSave",
-  "eslint.validate": [
-    "javascript",
-    "typescript",
-    "vue"
-  ],
+  "eslint.validate": ["javascript", "typescript", "vue"],
   // Prettier configuration - use project settings, not VS Code extension settings
   "prettier.requireConfig": true,
   "prettier.useEditorConfig": false,

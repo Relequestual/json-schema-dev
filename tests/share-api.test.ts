@@ -7,7 +7,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { env } from 'cloudflare:test';
 import type { D1Database } from '@cloudflare/workers-types/experimental';
-import type { ShareRequest, ShareResponse } from '../app/utils/sharing';
+import type { ShareRequest } from '../app/utils/sharing';
 import { shareContent, retrieveSharedContent, createStoredShare } from '../app/utils/sharing';
 
 // Helper to create test payloads
