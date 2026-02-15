@@ -4,23 +4,21 @@
 
 **Project**: jsonschema.dev - Browser-based JSON Schema validation playground
 **Status**: Migration from Vue 2 + Vue CLI (`previous/`) → Nuxt 4 + Cloudflare Workers
-**Current Phase**: Phase 1 COMPLETE (Aug 9, 2025) → Phase 2 in progress
+**Current Phase**: Phase 1 COMPLETE (Aug 9, 2025) → Phase 2 COMPLETE → Phase 3 in progress
 **Phase 1 Achievements**: Routing, base components, styling, state management
-**Phase 2 Focus**: Monaco editor integration, validation UI connection
+**Phase 2 Achievements**: Monaco editor integration, validation UI wiring, debounced validation UX
+**Phase 3 Focus**: Backend services for shareable URLs (D1 + Workers API)
 
-## 🚨 CRITICAL: Always Check PLANNING.md and current-tasks.md First
+## 🚨 Planning-First Development Workflow
 
-**PLANNING.md is the source of truth for all project work. Check it when:**
+This project follows a **checkpoint-driven development approach** where planning documents are the source of truth. See [.copilot/skills/planning-first-development/SKILL.md](.copilot/skills/planning-first-development/) for detailed guidelines on:
 
-- **Starting work on a new feature or component**
-- **Moving between project phases**
-- **Implementing architecture-level changes**
-- **Questions arise about project status or priorities**
-- **Making decisions that impact multiple components**
+- When to check `.project-management/planning.md` vs. `.project-management/current-tasks.md`
+- Checkpoint process between phases
+- Phased progress tracking and task completion
+- Source of truth for architectural decisions
 
-**current-tasks.md** tracks the latest actionable items. **Always check current-tasks.md before starting new work or clarifying priorities.**
-
-PLANNING.md contains detailed implementation status tracking, technical specifications, and phase-specific requirements. Not every minor change requires consulting it.
+**Quick reference**: Check planning docs for new features, architecture decisions, and phase transitions. Skip planning checks for isolated bug fixes and small refactors.
 
 ## ⚠️ Absolute Requirements for Ways of Working
 
@@ -29,7 +27,7 @@ PLANNING.md contains detailed implementation status tracking, technical specific
 - **Never make assumptions** - It's FAR better to admit uncertainty than to present incorrect information as fact
 - **Prefer documentation over assumptions** - Always suggest checking official sources rather than guessing
 - **Scope discipline** - Only implement what is explicitly requested. Ask before adding features, refactoring, or making changes beyond the stated request
-- **Preserve critical planning information** - When updating documentation, NEVER remove existing sections without explicit confirmation. Instead, enhance sections with status updates, add new sections, or ask before removing anything that tracks features, requirements, or user-facing functionality
+- **Documentation handling** - See [.copilot/skills/planning-doc-practices/SKILL.md](.copilot/skills/planning-doc-practices/) for guidelines on enhancing vs. removing planning documentation
 - **Clean build first for runtime errors** - If code encounters errors at runtime (especially mysterious warnings or unexpected behavior), always try a clean build first: `rm -rf .output && pnpm build`. Stale build artifacts in `.output/` can cause confusing errors that don't exist in the source code
 
 ## 👤 User Preferences & Patterns
@@ -40,12 +38,6 @@ PLANNING.md contains detailed implementation status tracking, technical specific
 - **Checkpoint-driven**: Explicit plan reviews between phases, mark tasks complete as progress
 - **TypeScript-first**: Prefer strong typing and composition API patterns throughout
 - **Compatibility-focused**: Preserve existing shared URLs during migration (critical user requirement)
-
-### Documentation Preservation Principle
-
-- **ENHANCE existing feature tracking with minimal implementation details**
-- **ASK before removing any section that tracks user features, requirements, or legacy app parity**
-- **Remember: "Core Features" tracks what users expect, "Implementation Status" tracks what code exists**
 
 ### Implementation Patterns Discovered
 
@@ -104,13 +96,13 @@ PLANNING.md contains detailed implementation status tracking, technical specific
 - **UI Framework**: ✅ **Nuxt UI** - Official Nuxt component library with Tailwind CSS v4, Monaco Editor for JSON editing
 - **State Management**: ✅ **Pinia + XState selected** - Pinia for data, XState for workflow logic
 - **Architecture**: XState perfect for JSON Schema validation workflow (parse → validate → display → share)
-- **Project Structure**: See `project-management/decisions/PROJECT_STRUCTURE.md` for full implementation
+- **Project Structure**: See `.project-management/decisions/PROJECT_STRUCTURE.md` for full implementation
 
 ## 🔄 Implementation Strategy
 
 **Phased Development Approach**: This project follows a carefully structured phased development approach. See PLANNING.md for detailed implementation status tracking and specific tasks within each phase.
 
-**Backend Service Planning**: The project is migrating from client-side URL encoding to a Cloudflare Workers API solution. See PLANNING.md for detailed backend architecture decisions.
+**Backend Service Planning**: The project is migrating from client-side URL encoding to a Cloudflare Workers API solution. See .project-management/planning.md for detailed backend architecture decisions.
 
 **Decision Process**:
 
@@ -126,4 +118,4 @@ PLANNING.md contains detailed implementation status tracking, technical specific
 
 ## Context Reminder
 
-Check `PLANNING.md` for current project status and detailed context when making architectural suggestions or beginning significant new work. For routine code changes or isolated fixes, referencing this instruction document may be sufficient.
+Check .project-management/planning.md for current project status and detailed context when making architectural suggestions or beginning significant new work. For routine code changes or isolated fixes, referencing this instruction document may be sufficient.
