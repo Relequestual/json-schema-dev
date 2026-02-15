@@ -1,8 +1,13 @@
+---
+name: planning-doc-practices
+description: 'Guidelines for safely modifying planning and requirements documentation during development. Use when updating docs, removing sections, consolidating features, or distinguishing feature tracking from implementation details. Prevents loss of critical context through careless documentation rewrites. Covers enhancement vs. removal heuristics, when to ask before modifying, and the planning vs. implementation distinction.'
+---
+
 # Planning Doc Practices
 
-**Description**: Guidelines for safely modifying planning and requirements documentation during active development. Distinguishes between feature tracking (persistent) and implementation details (transient), preventing loss of critical context through careless documentation updates.
+Guidelines for safely modifying planning and requirements documentation during active development. Distinguishes between feature tracking (persistent) and implementation details (transient), preventing loss of critical context through careless documentation updates.
 
-**Context**: Essential for any project with planning/requirements docs that track what users need vs. how it's built. Prevents AI (and humans) from "helpfully" reorganizing away important constraints.
+**Essential for**: Any project with planning/requirements docs that track what users need vs. how it's built. Prevents AI (and humans) from "helpfully" reorganizing away important constraints.
 
 ---
 

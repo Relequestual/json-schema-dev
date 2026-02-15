@@ -1,8 +1,13 @@
+---
+name: planning-first-development
+description: 'Checkpoint-driven development methodology where planning documents are the source of truth. Use when starting features, moving between phases, making architecture decisions, or managing multi-phase projects with explicit planning. Covers when to check planning docs, checkpoint processes, phased progress tracking, and preventing misdirected implementation.'
+---
+
 # Planning-First Development
 
-**Description**: A checkpoint-driven development methodology where planning documents serve as the source of truth for project direction, and AI agents check high-level plans before implementing features or making architecture decisions.
+A checkpoint-driven development methodology where planning documents serve as the source of truth for project direction, and AI agents check high-level plans before implementing features or making architecture decisions.
 
-**Context**: Ideal for multi-phase projects with explicit planning documentation and phased deliverables. Works across all tech stacks and project types.
+**Ideal for**: Multi-phase projects with explicit planning documentation and phased deliverables. Works across all tech stacks and project types.
 
 ---
 

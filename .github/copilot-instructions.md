@@ -11,7 +11,7 @@
 
 ## 🚨 Planning-First Development Workflow
 
-This project follows a **checkpoint-driven development approach** where planning documents are the source of truth. See [.copilot/skills/planning-first-development/SKILL.md](.copilot/skills/planning-first-development/) for detailed guidelines on:
+This project follows a **checkpoint-driven development approach** where planning documents are the source of truth. See [planning-first-development](.copilot/skills/planning-first-development/SKILL.md) for detailed guidelines on:
 
 - When to check `.project-management/planning.md` vs. `.project-management/current-tasks.md`
 - Checkpoint process between phases
@@ -27,7 +27,7 @@ This project follows a **checkpoint-driven development approach** where planning
 - **Never make assumptions** - It's FAR better to admit uncertainty than to present incorrect information as fact
 - **Prefer documentation over assumptions** - Always suggest checking official sources rather than guessing
 - **Scope discipline** - Only implement what is explicitly requested. Ask before adding features, refactoring, or making changes beyond the stated request
-- **Documentation handling** - See [.copilot/skills/planning-doc-practices/SKILL.md](.copilot/skills/planning-doc-practices/) for guidelines on enhancing vs. removing planning documentation
+- **Documentation handling** - See [planning-doc-practices](.copilot/skills/planning-doc-practices/SKILL.md) for guidelines on enhancing vs. removing planning documentation
 - **Clean build first for runtime errors** - If code encounters errors at runtime (especially mysterious warnings or unexpected behavior), always try a clean build first: `rm -rf .output && pnpm build`. Stale build artifacts in `.output/` can cause confusing errors that don't exist in the source code
 
 ## 👤 User Preferences & Patterns
